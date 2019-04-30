@@ -1,0 +1,9 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../FMReceiver.srcs/sources_1/new/OscConstants.vhd" \
+"../../../../../LO.vhd" \
+"../../../../../Mixer.vhd" \
+"../../../../FMReceiver.srcs/sources_1/new/MixerTB.vhd" \
+
+# Do not sort compile order
+nosort
