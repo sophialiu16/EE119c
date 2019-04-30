@@ -26,6 +26,7 @@ package OscConstants is
     constant NUM_STATIONS : natural := 105; -- 104 total stations 
     
     constant ADC_BITS : natural := 15; -- ADC resolution, number of bits -1
+    constant ADC_ZERO : unsigned(ADC_BITS downto 0) := (ADC_BITS => '0', others => '1'); -- mid-point, or zero point, of adc 
     
     -- NCO constants
     -- constants for generating frequencies, depend on clock frequency 

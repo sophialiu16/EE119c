@@ -37,9 +37,15 @@ architecture Mixer of Mixer is
 		if rising_edge(Clk) then 
 		  -- switching mixer
 		  if LO = '1' then 
+		      -- multiply signal by 1, no modification
 		      IFOut <= RF; 
 		  elsif LO = '0' then  
-		      IFOut <= RF; -- negate - add/sub 1/2 TODO
+		      -- multiply signal by "-1", invert signal
+		      if RF(ADC_BITS) = '1' then 
+		          IFOut <= std_logic_vector(unsigned(RF) - ADC_ZERO);
+		      else 
+		          IFOut <= std_logic_vector(unsigned(RF) + ADC_ZERO); 
+		      end if; 
 		  else 
 		      IFOUT <= (others => 'X'); -- for simulation 
 		  end if;  

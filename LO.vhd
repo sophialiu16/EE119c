@@ -39,20 +39,18 @@ architecture LO of LO is
 	process(clk)
 	   begin
 	   if rising_edge(Clk) and Reset = '1' then 
-	       --Count <= Count + to_unsigned(COUNT_TABLE(to_integer(unsigned(FControl))), Count'length);
-	       
-	       -- check if count wrapped (be sure it hasn't automatically wrapped, depending on max_cnt)
 	       if Count + to_unsigned(COUNT_TABLE(to_integer(unsigned(FControl))), Count'length) > MAX_COUNT then 
 	           -- wrap count, switch output
 	           Count <= Count + to_unsigned(COUNT_TABLE(to_integer(unsigned(FControl))), Count'length) - MAX_COUNT; 
 	           SigOut <= not(SigOut); 
 	       else 
+	           -- otherwise continue counter
 	           Count <= Count + to_unsigned(COUNT_TABLE(to_integer(unsigned(FControl))), Count'length); 
 	       end if; 
 	       
 	   end if;     
 	   if Reset = '0' then 
-	       -- reset counter on reset 
+	       -- reset counter and output signal on reset 
 	       Count <= (others => '0'); 
 	       SigOut <= '0'; 
 	   end if; 
