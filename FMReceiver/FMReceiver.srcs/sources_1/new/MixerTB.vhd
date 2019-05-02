@@ -15,7 +15,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
+library work; 
 use work.OscConstants.all;
+use work.TestVectors.all;
 
 entity MixerTB is
 end MixerTB;
@@ -78,6 +80,8 @@ begin
             variable  i  :  integer;        -- general loop indices
             variable  j  :  integer;
 
+            variable TestSig : real; 
+            
             begin
 
             -- have not yet started
@@ -85,27 +89,48 @@ begin
             FControl <= (others => '0'); 
             wait for CLK_PERIOD * 10;
 
+            -- test 9.1 MHz osc
             Reset <= '1'; 
             wait for CLK_PERIOD * 1000;
             
+            -- test 29.1 MHz osc
             Reset <= '0'; 
+            FControl <= std_logic_vector(to_unsigned(100, FControl'length));
             wait for CLK_PERIOD;
             Reset <= '1'; 
-             
-            FControl <= std_logic_vector(to_unsigned(100, FControl'length)); 
             wait for CLK_PERIOD * 1000;
             
---            for i in 0 to 100 loop
---                -- check output data
+            -- 9.1 MHz carrier test signal 
+            Reset <= '0'; 
+            FControl <= (others => '0'); 
+            wait for CLK_PERIOD;
+            Reset <= '1'; 
+            
+            for i in 0 to Test91'length - 1 loop
+                -- shift and quantize test input from -1, 1 to 16 bits
+                TestSig := Test91(i)*(2.0**(15)-1.0);
+                TestSig := TestSig + (2.0**(15)-1.0); 
+                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
+                wait for SAMPLE_CLK_PERIOD;
+            end loop; 
+            
+            -- 13.3 MHz carrier test signal 
+            FControl <= std_logic_vector(to_unsigned(21, FControl'length)); 
+            wait for CLK_PERIOD; 
+            for i in 0 to Test133'length - 1 loop
+                -- shift and quantize test input from -1, 1 to 16 bits
+                TestSig := Test133(i)*(2.0**(15)-1.0);
+                TestSig := TestSig + (2.0**(15)-1.0); 
+                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
+                wait for SAMPLE_CLK_PERIOD;
+            end loop; 
 --                assert (DataOutTest77 = TestCycle577(i*2 + 1))
 --                     report  "Mesh 7x7 failure; Initial : " & integer'image(to_integer(unsigned(TestCycle577(i*2))))
 --                     & "     Final : "  &  integer'image(to_integer(unsigned(DataOutTest77)))
 --                     & "     Correct : " & integer'image(to_integer(unsigned(TestCycle577(i*2 + 1))))
 --                     & "     Test Number : " & integer'image(i)
 --                     severity  ERROR;
---            end loop;
 
- 
 
             END_SIM <= true;
             wait;

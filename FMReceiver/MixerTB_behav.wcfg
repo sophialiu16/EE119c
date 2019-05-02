@@ -7,17 +7,18 @@
          <top_modules>
             <top_module name="MixerTB" />
             <top_module name="oscconstants" />
+            <top_module name="testvectors" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="398752500000fs"></ZoomStartTime>
-      <ZoomEndTime time="400845500001fs"></ZoomEndTime>
-      <Cursor1Time time="400392500000fs"></Cursor1Time>
+      <ZoomStartTime time="7959326250fs"></ZoomStartTime>
+      <ZoomEndTime time="112859326251fs"></ZoomEndTime>
+      <Cursor1Time time="73600000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="116"></NameColumnWidth>
-      <ValueColumnWidth column_width="139"></ValueColumnWidth>
+      <ValueColumnWidth column_width="134"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="8" />
    <wave_markers>
@@ -45,17 +46,21 @@
       <obj_property name="ObjectShortName">FOut</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/CountOut" type="array">
-      <obj_property name="ElementShortName">CountOut[16:0]</obj_property>
-      <obj_property name="ObjectShortName">CountOut[16:0]</obj_property>
+      <obj_property name="ElementShortName">CountOut[10:0]</obj_property>
+      <obj_property name="ObjectShortName">CountOut[10:0]</obj_property>
       <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
       <obj_property name="CellHeight">100</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/RF" type="array">
       <obj_property name="ElementShortName">RF[15:0]</obj_property>
       <obj_property name="ObjectShortName">RF[15:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/IFOut" type="array">
       <obj_property name="ElementShortName">IFOut[15:0]</obj_property>
       <obj_property name="ObjectShortName">IFOut[15:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
    </wvobject>
 </wave_config>

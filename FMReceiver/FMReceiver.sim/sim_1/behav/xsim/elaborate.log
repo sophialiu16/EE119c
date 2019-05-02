@@ -13,6 +13,7 @@ Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
 Compiling package ieee.math_real
 Compiling package xil_defaultlib.oscconstants
+Compiling package xil_defaultlib.testvectors
 Compiling architecture lo of entity xil_defaultlib.LO [lo_default]
 Compiling architecture mixer of entity xil_defaultlib.Mixer [mixer_default]
 Compiling architecture tb_arch of entity xil_defaultlib.mixertb
