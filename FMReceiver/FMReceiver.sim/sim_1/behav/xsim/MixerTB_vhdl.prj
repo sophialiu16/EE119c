@@ -1,6 +1,7 @@
 # compile vhdl design source files
 vhdl xil_defaultlib  \
 "../../../../FMReceiver.srcs/sources_1/new/OscConstants.vhd" \
+"../../../../FMReceiver.srcs/sources_1/new/BPF.vhd" \
 "../../../../../LO.vhd" \
 "../../../../../Mixer.vhd" \
 "../../../../FMReceiver.srcs/sources_1/new/TestVectors.vhd" \

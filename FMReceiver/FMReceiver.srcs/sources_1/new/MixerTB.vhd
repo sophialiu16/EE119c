@@ -45,6 +45,20 @@ architecture TB_ARCH of MixerTB is
         );
     end component; 
     
+    component BPF is 
+        generic(
+            N      : natural := FILTER_N; -- number of int, comb stages
+            R      : natural := FILTER_R -- rate change
+        );
+        port(
+            SigIn   : in  std_logic_vector(ADC_BITS downto 0); -- Mixed IF input 
+            Clk     : in  std_logic; -- Sampling clock 
+            Reset   : in std_logic; 
+            --SClk  :  in std_logic; -- Sampling clock 
+            SigOut  : out  std_logic_vector(FILTER_BITS downto 0) -- filtered output
+        );
+    end component;
+    
     -- Signal used to stop clock signal generators
     signal  END_SIM  :  BOOLEAN := FALSE;
     signal  Clk     : std_logic; -- system clock
@@ -56,7 +70,7 @@ architecture TB_ARCH of MixerTB is
     signal CountOut     : std_logic_vector(MAX_COUNT_BITS downto 0);
     signal RF           : std_logic_vector(ADC_BITS downto 0); -- RF input 
     signal IFOut        : std_logic_vector(ADC_BITS downto 0); -- Mixed intermediate frequency output 
-
+    signal FilterOut    : std_logic_vector(FILTER_BITS downto 0); -- filtered IF signal
 begin
     -- test components
     UUT : LO
@@ -76,6 +90,19 @@ begin
             IFOut => IFOut
         );
         
+    UUTF: BPF 
+        generic map(
+            N   => FILTER_N, 
+            R   => FILTER_R  
+        )
+        port map(
+            SigIn   => IFOut,
+            Clk     => Clk, 
+            Reset   => Reset,
+            --SClk  :  in std_logic; -- Sampling clock 
+            SigOut  => FilterOut
+        );
+        
         process
             variable  i  :  integer;        -- general loop indices
             variable  j  :  integer;
@@ -87,6 +114,7 @@ begin
             -- have not yet started
             Reset <= '0';
             FControl <= (others => '0'); 
+            RF <= (others => '0'); 
             wait for CLK_PERIOD * 10;
 
             -- test 9.1 MHz osc
@@ -106,9 +134,9 @@ begin
             wait for CLK_PERIOD;
             Reset <= '1'; 
             
-            for i in 0 to Test91'length - 1 loop
-                -- shift and quantize test input from -1, 1 to 16 bits
-                TestSig := Test91(i)*(2.0**(15)-1.0);
+            for i in 0 to Test912'length - 1 loop
+                -- shift and quantize test input from [-1, 1] to 16 bits
+                TestSig := Test912(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
                 wait for SAMPLE_CLK_PERIOD;
@@ -118,7 +146,7 @@ begin
             FControl <= std_logic_vector(to_unsigned(21, FControl'length)); 
             wait for CLK_PERIOD; 
             for i in 0 to Test133'length - 1 loop
-                -- shift and quantize test input from -1, 1 to 16 bits
+                -- shift and quantize test input from [-1, 1] to 16 bits
                 TestSig := Test133(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
@@ -165,6 +193,9 @@ configuration TESTBENCH_FOR_MIXER of MixerTB is
         end for;
         for UUTM : Mixer
             use entity work.Mixer;
+        end for;
+        for UUTF : BPF
+            use entity work.BPF;
         end for;
     end for;
 end TESTBENCH_FOR_MIXER;

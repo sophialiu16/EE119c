@@ -16,5 +16,6 @@ Compiling package xil_defaultlib.oscconstants
 Compiling package xil_defaultlib.testvectors
 Compiling architecture lo of entity xil_defaultlib.LO [lo_default]
 Compiling architecture mixer of entity xil_defaultlib.Mixer [mixer_default]
+Compiling architecture bpf of entity xil_defaultlib.BPF [\BPF(n=3,r=256)\]
 Compiling architecture tb_arch of entity xil_defaultlib.mixertb
 Built simulation snapshot MixerTB_behav

@@ -28,6 +28,15 @@ package OscConstants is
     constant ADC_BITS : natural := 15; -- ADC resolution, number of bits -1
     constant ADC_ZERO : unsigned(ADC_BITS downto 0) := (ADC_BITS => '0', others => '1'); -- mid-point, or zero point, of adc 
     
+    -- filter constants 
+    --maximum number of filter bits needed, numbits = ceil(N log2 (RM) + Bin) = 37
+    constant FILTER_BITS : natural := 39;--36; -- numbits - 1
+    constant FILTER_N : natural := 3; -- number of stages
+    constant FILTER_M : natural := 1; -- diff delay 
+    constant FILTER_R : natural := 256;--128; -- rate change 
+             -- N, R, M : 3dB ~200 KHz
+             -- R = 256: 3dB ~100 KHz
+    
     -- NCO constants
     -- constants for generating frequencies, depend on clock frequency 
     constant MAX_COUNT : natural := 1000; -- max NCO count 

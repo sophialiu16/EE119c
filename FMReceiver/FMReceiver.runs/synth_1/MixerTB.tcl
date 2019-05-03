@@ -17,6 +17,9 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_msg_config -id {Common 17-41} -limit 10000000
+set_msg_config -id {Synth 8-256} -limit 10000
+set_msg_config -id {Synth 8-638} -limit 10000
 create_project -in_memory -part xc7k70tfbv676-1
 
 set_param project.singleFileAddWarning.threshold 0
@@ -30,8 +33,10 @@ set_property ip_output_repo c:/Users/Soph/Documents/College/Senior/EE119c/FMRece
 set_property ip_cache_permissions {read write} [current_project]
 read_vhdl -library xil_defaultlib {
   C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/OscConstants.vhd
+  C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/BPF.vhd
   C:/Users/Soph/Documents/College/Senior/EE119c/LO.vhd
   C:/Users/Soph/Documents/College/Senior/EE119c/Mixer.vhd
+  C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/TestVectors.vhd
   C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/MixerTB.vhd
 }
 # Mark all dcp files as not used in implementation to prevent them from being

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1556666883">
+<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1556871360">
   <File Type="PA-TCL" Name="MixerTB.tcl"/>
+  <File Type="RDS-PROPCONSTRS" Name="MixerTB_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="MixerTB_reports.tcl"/>
   <File Type="RDS-RDS" Name="MixerTB.vds"/>
   <File Type="RDS-UTIL" Name="MixerTB_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="MixerTB_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="MixerTB.dcp"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="MixerTB_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="MixerTB_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/OscConstants.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/BPF.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -21,6 +30,12 @@
       </FileInfo>
     </File>
     <File Path="$PPRDIR/../Mixer.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/TestVectors.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
