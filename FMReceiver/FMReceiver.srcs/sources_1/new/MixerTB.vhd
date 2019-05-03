@@ -2,7 +2,8 @@
 --
 -- Test Bench for Mixer
 --
--- Test Bench for FM Receiver Mixer/LO
+-- Test Bench for FM Receiver front-end mixer and filter. Uses several 
+-- test signal input vectors. 
 --
 --  Revision History:
 --     04/29/19 Sophia Liu initial revision
@@ -16,7 +17,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library work; 
-use work.OscConstants.all;
+use work.RecConstants.all;
 use work.TestVectors.all;
 
 entity MixerTB is
@@ -27,36 +28,34 @@ architecture TB_ARCH of MixerTB is
     -- test components
     component LO is
         port(
-            Clk         : in  std_logic; -- System clock 
-            Reset       : in std_logic; -- Active low reset input
-            FControl    : in  std_logic_vector(6 downto 0); -- Frequency control 
-            FOut        : out  std_logic; -- Oscillator output
-            CountOut    : out std_logic_vector(MAX_COUNT_BITS downto 0) -- output counter for testing
+            Clk         : in  std_logic;    -- 1-bit system clock 
+            Reset       : in std_logic;     -- 1-bit active low reset input
+            FControl    : in  std_logic_vector(6 downto 0); -- 6-bit frequency control input 
+            FOut        : out  std_logic;   -- 1-bit oscillator output
+            CountOut    : out std_logic_vector(MAX_COUNT_BITS downto 0) -- MAX_COUNT_BITS-sized accumulator
         );
     end component;
 
     component Mixer is 
         port(
-            RF    :  in  std_logic_vector(ADC_BITS downto 0); -- RF input 
+            RF    :  in  std_logic_vector(ADC_BITS downto 0); -- Radio frequency input 
             LO    :  in  std_logic; -- Local oscillator input
-            Clk   :  in  std_logic; -- System clock
-    
+            Clk   :  in  std_logic; -- Sampling clock input 
             IFOut :  out  std_logic_vector(ADC_BITS downto 0) -- Mixed intermediate frequency output 
         );
     end component; 
     
     component BPF is 
         generic(
-            N      : natural := FILTER_N; -- number of int, comb stages
-            R      : natural := FILTER_R -- rate change
+            N      : natural := FILTER_N;   -- number of integrator and comb stages
+            R      : natural := FILTER_R    -- rate change factor
         );
         port(
-            SigIn   : in  std_logic_vector(ADC_BITS downto 0); -- Mixed IF input 
-            Clk     : in  std_logic; -- Sampling clock 
-            Reset   : in std_logic; 
-            --SClk  :  in std_logic; -- Sampling clock 
-            SigOut  : out  std_logic_vector(FILTER_BITS downto 0) -- filtered output
-        );
+            SigIn   : in std_logic_vector(ADC_BITS downto 0); -- input signal to be filtered 
+            Clk     : in std_logic;     -- original sampling clock 
+            Reset   : in std_logic;     -- active low reset input 
+            SigOut  : out std_logic_vector(FILTER_BITS downto 0) -- filtered output signal 
+        ); 
     end component;
     
     -- Signal used to stop clock signal generators
@@ -99,7 +98,6 @@ begin
             SigIn   => IFOut,
             Clk     => Clk, 
             Reset   => Reset,
-            --SClk  :  in std_logic; -- Sampling clock 
             SigOut  => FilterOut
         );
         
@@ -152,14 +150,7 @@ begin
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
                 wait for SAMPLE_CLK_PERIOD;
             end loop; 
---                assert (DataOutTest77 = TestCycle577(i*2 + 1))
---                     report  "Mesh 7x7 failure; Initial : " & integer'image(to_integer(unsigned(TestCycle577(i*2))))
---                     & "     Final : "  &  integer'image(to_integer(unsigned(DataOutTest77)))
---                     & "     Correct : " & integer'image(to_integer(unsigned(TestCycle577(i*2 + 1))))
---                     & "     Test Number : " & integer'image(i)
---                     severity  ERROR;
-
-
+            
             END_SIM <= true;
             wait;
         end process;

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------
 -- 
--- Receiver Entity
+-- Receiver Entity (TODO)
 --
 -- Description
 --
@@ -16,7 +16,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library work; 
-use work.OscConstants.all; 
+use work.RecConstants.all; 
 
 entity Receiver is 
         port(
