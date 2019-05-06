@@ -80,14 +80,14 @@ architecture TB_ARCH of MixerTB is
         );
     end component; 
 
---    component NCO is 
---        port(
---            Clk         : in  std_logic;    -- 1-bit system clock 
---            Reset       : in std_logic;     -- 1-bit active low reset input
---            FAdd        : in  std_logic_vector(2 downto 0); -- accumulating input 
---            FOutPLL     : out  std_logic   -- 1-bit oscillator output
---        );
---    end component; 
+    component NCO is 
+        port(
+            Clk         : in  std_logic;    -- 1-bit system clock 
+            Reset       : in std_logic;     -- 1-bit active low reset input
+            FAdd        : in  std_logic_vector(2 downto 0); -- accumulating input 
+            FOutPLL     : out  std_logic   -- 1-bit oscillator output
+        );
+    end component; 
 
     -- Signal used to stop clock signal generators
     signal  END_SIM  :  BOOLEAN := FALSE;
@@ -102,8 +102,8 @@ architecture TB_ARCH of MixerTB is
     signal IFOut        : std_logic_vector(ADC_BITS downto 0); -- Mixed intermediate frequency output 
     signal FilterOut    : std_logic_vector(FILTER_BITS downto 0); -- filtered IF signal
     
-    signal SigIn1 : std_logic_vector(FILTER_BITS downto 0); 
-    signal SigIn2 : std_logic;
+    --signal SigIn1 : std_logic_vector(FILTER_BITS downto 0); 
+    --signal SigIn2 : std_logic;
     --signal PhaseOut : std_logic_vector(FILTER_BITS downto 0);
     signal PhaseUp : std_logic; 
     signal PhaseDown : std_logic;
@@ -113,6 +113,7 @@ architecture TB_ARCH of MixerTB is
     signal PhaseErr : std_logic_vector(2 downto 0);
     
     signal FOutPLL : std_logic;
+    --signal PDReset : std_logic; 
     
 begin
     -- test components
@@ -165,13 +166,13 @@ begin
             PhaseErr        => PhaseErr
         );
     
---    UUTNCO: NCO 
---        port map(
---            Clk     => Clk, 
---            Reset   => Reset, 
---            FAdd    => PhaseErr,
---            FOutPLL  => FOutPLL
---        );
+    UUTNCO: NCO 
+        port map(
+            Clk     => Clk, 
+            Reset   => Reset, 
+            FAdd    => PhaseErr,
+            FOutPLL  => FOutPLL
+        );
         process
             variable  i  :  integer;        -- general loop indices
             variable  j  :  integer;
@@ -265,8 +266,8 @@ configuration TESTBENCH_FOR_MIXER of MixerTB is
         for UUTF2: LoopFilter
             use entity work.LoopFilter;
         end for;
---        for UUTNCO: NCO
---            use entity work.NCO;
---        end for;
+        for UUTNCO: NCO
+            use entity work.NCO;
+        end for;
     end for;
 end TESTBENCH_FOR_MIXER;

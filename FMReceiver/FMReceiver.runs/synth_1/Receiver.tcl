@@ -34,9 +34,9 @@ read_vhdl -library xil_defaultlib {
   C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/LO.vhd
   C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/LPF.vhd
   C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/Mixer.vhd
-  C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/TestVectors.vhd
+  C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/NCO.vhd
   C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/PhaseDetector.vhd
-  C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/MixerTB.vhd
+  C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/Receiver.vhd
 }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -49,12 +49,12 @@ foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]
 
-synth_design -top MixerTB -part xc7k70tfbv676-1
+synth_design -top Receiver -part xc7k70tfbv676-1
 
 
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
-write_checkpoint -force -noxdef MixerTB.dcp
-create_report "synth_1_synth_report_utilization_0" "report_utilization -file MixerTB_utilization_synth.rpt -pb MixerTB_utilization_synth.pb"
+write_checkpoint -force -noxdef Receiver.dcp
+create_report "synth_1_synth_report_utilization_0" "report_utilization -file Receiver_utilization_synth.rpt -pb Receiver_utilization_synth.pb"
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]

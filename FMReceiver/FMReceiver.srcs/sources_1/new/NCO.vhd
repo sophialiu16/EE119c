@@ -41,10 +41,11 @@ architecture NCO of NCO is
 	   if rising_edge(Clk) and Reset = '1' then 
 	       -- accumulate control 
 	       -- TODO convert to signed, direct add 
-	       if FAdd(2) = '1' then 
+	       if FAdd(2) = '1' and (FControl < 29) then --TODO gen
 	           FControl <= FControl + unsigned(FAdd(1 downto 0)); -- TODO wraps
-	       else 
-	           FControl <= FControl - unsigned(not FAdd(1 downto 0)); 
+	           
+	       elsif FAdd(2) = '0' and FControl > 2 then 
+	           FControl <= FControl - unsigned(not FAdd(1 downto 0)); --TODO swap aa
 	       end if; 
 	       
 	       -- Check if the counter has passed the maximum accumulation value 

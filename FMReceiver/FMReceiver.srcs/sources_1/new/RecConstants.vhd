@@ -55,14 +55,15 @@ package RecConstants is
 
     -- TODO generalize
     -- Oscillator constants; depend on system clock frequency 
-    constant MAX_COUNT_2 : natural := 60000; -- max oscillator count 
-    constant MAX_COUNT_BITS_2 : natural := 15; -- numbits - 1 to achieve max count without wrapping
+    constant MAX_COUNT_2 : natural := 30000; -- max oscillator count 
+    constant MAX_COUNT_BITS_2 : natural := 14; -- numbits - 1 to achieve max count without wrapping
     
     -- LUT for oscillator counter 
     type CountArray2 is array(0 to 31) of natural; 
     constant COUNT_TABLE_2 : CountArray2 := ( 
-        7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
+        --7, 8, 9,
+        10, 11, 12, 13, 14, 15, 16, 17, 
         18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 
-        28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38);
+        28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41);
     --40000 - 5-25 
 end package RecConstants;

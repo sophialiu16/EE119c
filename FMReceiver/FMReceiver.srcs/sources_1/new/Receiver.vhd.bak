@@ -24,8 +24,8 @@ entity Receiver is
             Reset       : in std_logic; -- Active low reset input
             RF          : in std_logic_vector(ADC_BITS downto 0); -- RF input 
             FControl    : in std_logic_vector(6 downto 0); -- Frequency control 
-            IFOut       : out std_logic_vector(ADC_BITS downto 0) -- Oscillator output
-            
+            IFOut       : out std_logic_vector(ADC_BITS downto 0); -- Oscillator output
+            FilterOut   : out std_logic_vector(FILTER_BITS downto 0)
         );
 end Receiver; 
 
@@ -36,17 +36,6 @@ architecture behavioral of Receiver is
     signal CountOut     : std_logic_vector(MAX_COUNT_BITS downto 0);
     signal IFSig         : std_logic_vector(ADC_BITS downto 0);
     
-	 signal FilterOut   : std_logic_vector(FILTER_BITS downto 0);
-	 
-    signal PhaseUp : std_logic; 
-    signal PhaseDown : std_logic;
-    
-    signal PhaseDownLPF : std_logic_vector(1 downto 0); 
-    signal PhaseUpLPF : std_logic_vector(1 downto 0); 
-    signal PhaseErr : std_logic_vector(2 downto 0);
-    
-    signal FOutPLL : std_logic;
-	 
     begin 
         LO : entity work.LO 
         port map (
@@ -67,45 +56,18 @@ architecture behavioral of Receiver is
         
         IFOut <= IFSig; 
         
-        BPF : entity work.BPF 
-		  generic map(
-            N   => FILTER_N, 
-            R   => FILTER_R  
+        BPF : entity work.BPF
+        generic map(
+            N   => 3, 
+            R   => 256  
         )
         port map(
             SigIn   => IFSig,
-            Clk     => Clk, 
-            Reset   => Reset,
-            SigOut  => FilterOut
-        );
-		  
-		  PhaseDetector: entity work.PhaseDetector 
-			port map (
-				  SigIn1 => FilterOut(FILTER_BITS),
-				  SigIn2 => FOutPLL,  
-				  Clk   => Clk, 
-				  Reset => Reset, 
-				  PhaseDown => PhaseDown,
-				  PhaseUp => PhaseUp
-			 );
-    
-		LoopFilter: entity work.LoopFilter
-        port map(
-            Clk         => Clk,  
-            PhaseDown   => PhaseDown, 
-            PhaseUp     => PhaseUp, 
-            PhaseDownLPF    => PhaseDownLPF, 
-            PhaseUpLPF      => PhaseUpLPF,
-            PhaseErr        => PhaseErr
-        );
-    
-		NCO: entity work.NCO 
-        port map(
-            Clk     => Clk, 
+            Clk     => Clk,
             Reset   => Reset, 
-            FAdd    => PhaseErr,
-            FOutPLL  => FOutPLL
-        );
+            --SClk  :  in std_logic; -- Sampling clock 
+            SigOut  => FilterOut
+        ); 
         
 end behavioral; 
  

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1557143087">
-  <File Type="PA-TCL" Name="MixerTB.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="MixerTB_drc_synth.rpt"/>
-  <File Type="REPORTS-TCL" Name="MixerTB_reports.tcl"/>
-  <File Type="RDS-RDS" Name="MixerTB.vds"/>
-  <File Type="RDS-UTIL" Name="MixerTB_utilization_synth.rpt"/>
-  <File Type="RDS-UTIL-PB" Name="MixerTB_utilization_synth.pb"/>
-  <File Type="RDS-DCP" Name="MixerTB.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="MixerTB_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="MixerTB_timing_summary_synth.pb"/>
+<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1557175763">
+  <File Type="PA-TCL" Name="Receiver.tcl"/>
+  <File Type="RDS-PROPCONSTRS" Name="Receiver_drc_synth.rpt"/>
+  <File Type="REPORTS-TCL" Name="Receiver_reports.tcl"/>
+  <File Type="RDS-RDS" Name="Receiver.vds"/>
+  <File Type="RDS-UTIL" Name="Receiver_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="Receiver_utilization_synth.pb"/>
+  <File Type="RDS-DCP" Name="Receiver.dcp"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="Receiver_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="Receiver_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/RecConstants.vhd">
@@ -41,7 +41,7 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/TestVectors.vhd">
+    <File Path="$PSRCDIR/sources_1/new/NCO.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -53,29 +53,28 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/MixerTB.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/NCO.vhd">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PSRCDIR/sources_1/new/Receiver.vhd">
       <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/TestVectors.vhd">
+      <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/MixerTB.vhd">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="MixerTB"/>
+      <Option Name="TopModule" Val="Receiver"/>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>

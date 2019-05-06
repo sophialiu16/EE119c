@@ -12,19 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="23480000001fs"></ZoomEndTime>
-      <Cursor1Time time="7617500000fs"></Cursor1Time>
+      <ZoomStartTime time="154202555550fs"></ZoomStartTime>
+      <ZoomEndTime time="193602555551fs"></ZoomEndTime>
+      <Cursor1Time time="608031667000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="116"></NameColumnWidth>
-      <ValueColumnWidth column_width="99"></ValueColumnWidth>
+      <ValueColumnWidth column_width="71"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="12" />
-   <wave_markers>
-      <marker time="382902696000" label="" />
-      <marker time="382957496000" label="" />
-   </wave_markers>
+   <WVObjectSize size="13" />
    <wvobject fp_name="/MixerTB/END_SIM" type="other">
       <obj_property name="ElementShortName">END_SIM</obj_property>
       <obj_property name="ObjectShortName">END_SIM</obj_property>
@@ -41,34 +37,6 @@
       <obj_property name="ElementShortName">FControl[6:0]</obj_property>
       <obj_property name="ObjectShortName">FControl[6:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/MixerTB/FOut" type="logic">
-      <obj_property name="ElementShortName">FOut</obj_property>
-      <obj_property name="ObjectShortName">FOut</obj_property>
-   </wvobject>
-   <wvobject fp_name="/MixerTB/CountOut" type="array">
-      <obj_property name="ElementShortName">CountOut[9:0]</obj_property>
-      <obj_property name="ObjectShortName">CountOut[9:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
-      <obj_property name="CellHeight">100</obj_property>
-   </wvobject>
-   <wvobject fp_name="/MixerTB/RF" type="array">
-      <obj_property name="ElementShortName">RF[15:0]</obj_property>
-      <obj_property name="ObjectShortName">RF[15:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
-      <obj_property name="CellHeight">100</obj_property>
-   </wvobject>
-   <wvobject fp_name="/MixerTB/IFOut" type="array">
-      <obj_property name="ElementShortName">IFOut[15:0]</obj_property>
-      <obj_property name="ObjectShortName">IFOut[15:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
-      <obj_property name="CellHeight">100</obj_property>
-      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
-      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
-      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
-      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
-      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
-      <obj_property name="AnalogHorizLine">0.000000</obj_property>
-   </wvobject>
    <wvobject fp_name="/MixerTB/FilterOut" type="array">
       <obj_property name="ElementShortName">FilterOut[39:0]</obj_property>
       <obj_property name="ObjectShortName">FilterOut[39:0]</obj_property>
@@ -81,6 +49,26 @@
       <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
       <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
+   <wvobject fp_name="/MixerTB/FilterOut[39]" type="logic">
+      <obj_property name="ElementShortName">[39]</obj_property>
+      <obj_property name="ObjectShortName">[39]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/FOutPLL" type="logic">
+      <obj_property name="ElementShortName">FOutPLL</obj_property>
+      <obj_property name="ObjectShortName">FOutPLL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/FOut" type="logic">
+      <obj_property name="ElementShortName">FOut</obj_property>
+      <obj_property name="ObjectShortName">FOut</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/UUTNCO/FControl" type="array">
+      <obj_property name="ElementShortName">FControl[4:0]</obj_property>
+      <obj_property name="ObjectShortName">FControl[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/UUTP/PDReset" type="logic">
+      <obj_property name="ElementShortName">PDReset</obj_property>
+      <obj_property name="ObjectShortName">PDReset</obj_property>
+   </wvobject>
    <wvobject fp_name="/MixerTB/PhaseUp" type="logic">
       <obj_property name="ElementShortName">PhaseUp</obj_property>
       <obj_property name="ObjectShortName">PhaseUp</obj_property>
@@ -89,8 +77,16 @@
       <obj_property name="ElementShortName">PhaseDown</obj_property>
       <obj_property name="ObjectShortName">PhaseDown</obj_property>
    </wvobject>
-   <wvobject fp_name="/MixerTB/FOut" type="logic">
-      <obj_property name="ElementShortName">FOut</obj_property>
-      <obj_property name="ObjectShortName">FOut</obj_property>
+   <wvobject fp_name="/MixerTB/PhaseErr" type="array">
+      <obj_property name="ElementShortName">PhaseErr[2:0]</obj_property>
+      <obj_property name="ObjectShortName">PhaseErr[2:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
 </wave_config>

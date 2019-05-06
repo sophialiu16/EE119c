@@ -30,40 +30,36 @@ entity PhaseDetector is
         Clk   :  in  std_logic; -- system ( sample?) clock input  
         Reset : in std_logic; -- active low system reset 
         PhaseDown : out std_logic; 
-        PhaseUp : out std_logic--(FILTER_BITS downto 0) -- num clock diff for zero crossings 
+        PhaseUp : out std_logic --(FILTER_BITS downto 0) -- num clock diff for zero crossings 
     );
 end PhaseDetector; 
 
 architecture Arch of PhaseDetector is 
-    signal PhaseDownInt : std_logic; 
+    signal PhaseDownInt : std_logic;
     signal PhaseUpInt   : std_logic; 
     signal PDReset : std_logic; 
 	begin 
 	
 	-- typical phase detector implementation, 2 dffs 
-	process(SigIn1) 
+	process(SigIn1, Reset, PDReset) 
 	   begin 
-	   if rising_edge(SigIn1) and PDReset = '0' and Reset = '1' then 
-	       PhaseDownInt <= '1'; -- set input active on signal edge 
-	   end if; 
-	   
-	   if PDReset = '1' or Reset = '0' then -- reset signal 
-	       PhaseDownInt <= '0'; 
-	   end if; 
+	   if Reset = '0' or PDReset = '1' then 
+	       PhaseUpInt <= '0';
+	   elsif rising_edge(SigIn1) then-- and PDReset = '0' and Reset = '1' then 
+	       PhaseUpInt <= '1'; -- set input active on signal edge 
+	   end if;  
     end process; 
 	
-	process(SigIn2) 
+	process(SigIn2, Reset, PDReset) 
 	   begin 
-	   if rising_edge(SigIn2) and PDReset = '0' and Reset = '1' then 
-	       PhaseUpInt <= '1'; -- set input active on signal edge 
-	   end if; 
-	   
-	   if PDReset = '1' or Reset = '0' then -- reset signal 
-	       PhaseUpInt <= '0'; 
+	   if Reset = '0' or PDReset = '1' then -- reset signal 
+	       PhaseDownInt <= '0'; 
+	   elsif rising_edge(SigIn2) then --and PDReset = '0' and Reset = '1' then 
+	       PhaseDownInt <= '1'; -- set input active on signal edge 
 	   end if; 
     end process; 
     
-	PDReset <= PhaseDownInt and PhaseUpInt; 
+	PDReset <= SigIn1 and SigIn2; 
 	PhaseDown <= PhaseDownInt; 
 	PhaseUp <= PhaseUpInt; 
 
