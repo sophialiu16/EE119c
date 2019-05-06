@@ -1,10 +1,11 @@
 # compile vhdl design source files
 vhdl xil_defaultlib  \
-"../../../../FMReceiver.srcs/sources_1/new/OscConstants.vhd" \
+"../../../../FMReceiver.srcs/sources_1/new/RecConstants.vhd" \
 "../../../../FMReceiver.srcs/sources_1/new/BPF.vhd" \
 "../../../../FMReceiver.srcs/sources_1/new/LO.vhd" \
 "../../../../FMReceiver.srcs/sources_1/new/Mixer.vhd" \
 "../../../../FMReceiver.srcs/sources_1/new/TestVectors.vhd" \
+"../../../../FMReceiver.srcs/sources_1/new/PhaseDetector.vhd" \
 "../../../../FMReceiver.srcs/sources_1/new/MixerTB.vhd" \
 
 # Do not sort compile order

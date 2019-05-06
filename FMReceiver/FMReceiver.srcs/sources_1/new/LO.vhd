@@ -2,7 +2,7 @@
 -- 
 -- Local Oscillator 
 --
--- This oscillator outputs a square wave from 9.1 MHz to 29.9 MHz, 
+-- This oscillator outputs a square wave from 9.0 MHz to 29.0 MHz, 
 -- in steps of 200 KHz. FControl is used to control the frequency 
 -- output. It is implemented as a simple numerically controlled oscillator,
 -- and it accumulates a frequency control value at each clock.
@@ -15,6 +15,8 @@
 -- Outputs: 
 --  FOut        : std_logic - 1-bit oscillator output
 --  CountOut    : std_logic_vector - MAX_COUNT_BITS-sized accumulator
+--
+-- Gate Count:  
 --
 -- Revision History:
 -- 04/27/19 Sophia Liu Initial revision

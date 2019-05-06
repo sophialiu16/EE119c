@@ -19,6 +19,8 @@
 -- Outputs: 
 --  SigOut  : std_logic_vector - FILTER_BITS-sized filtered output signal 
 --
+-- Gate Count:  
+--
 -- Revision History:
 -- 05/01/19 Sophia Liu Initial revision
 --

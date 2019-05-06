@@ -58,6 +58,16 @@ architecture TB_ARCH of MixerTB is
         ); 
     end component;
     
+    component PhaseDetector is 
+        port(
+            SigIn1 :  in  std_logic;--_vector(FILTER_BITS downto 0); -- Signal input 1  
+            SigIn2 :  in  std_logic;--_vector(FILTER_BITS downto 0); -- Signal input 2, changing freq  
+            Clk   :  in  std_logic; -- system ( sample??) clock input  
+            PhaseDown : out std_logic; 
+            PhaseUp : out std_logic --(FILTER_BITS downto 0) -- num clock diff for zero crossings 
+        );
+    end component; 
+    
     -- Signal used to stop clock signal generators
     signal  END_SIM  :  BOOLEAN := FALSE;
     signal  Clk     : std_logic; -- system clock
@@ -70,6 +80,13 @@ architecture TB_ARCH of MixerTB is
     signal RF           : std_logic_vector(ADC_BITS downto 0); -- RF input 
     signal IFOut        : std_logic_vector(ADC_BITS downto 0); -- Mixed intermediate frequency output 
     signal FilterOut    : std_logic_vector(FILTER_BITS downto 0); -- filtered IF signal
+    
+    signal SigIn1 : std_logic_vector(FILTER_BITS downto 0); 
+    signal SigIn2 : std_logic;
+    --signal PhaseOut : std_logic_vector(FILTER_BITS downto 0);
+    signal PhaseUp : std_logic; 
+    signal PhaseDown : std_logic;
+    
 begin
     -- test components
     UUT : LO
@@ -101,6 +118,15 @@ begin
             SigOut  => FilterOut
         );
         
+    UUTP: PhaseDetector 
+        port map (
+        SigIn1 => FilterOut(FILTER_BITS),
+        SigIn2 => FOut,  
+        Clk   => Clk, 
+        PhaseDown => PhaseDown,
+        PhaseUp => PhaseUp
+    );
+        
         process
             variable  i  :  integer;        -- general loop indices
             variable  j  :  integer;
@@ -115,33 +141,33 @@ begin
             RF <= (others => '0'); 
             wait for CLK_PERIOD * 10;
 
-            -- test 9.1 MHz osc
+            -- test 10 MHz osc
             Reset <= '1'; 
             wait for CLK_PERIOD * 1000;
             
-            -- test 29.1 MHz osc
+            -- test 30 MHz osc
             Reset <= '0'; 
             FControl <= std_logic_vector(to_unsigned(100, FControl'length));
             wait for CLK_PERIOD;
             Reset <= '1'; 
             wait for CLK_PERIOD * 1000;
             
-            -- 9.1 MHz carrier test signal 
+            -- 10.1 MHz carrier test signal 
             Reset <= '0'; 
             FControl <= (others => '0'); 
             wait for CLK_PERIOD;
             Reset <= '1'; 
             
-            for i in 0 to Test912'length - 1 loop
+            for i in 0 to Test101'length - 1 loop
                 -- shift and quantize test input from [-1, 1] to 16 bits
-                TestSig := Test912(i)*(2.0**(15)-1.0);
+                TestSig := Test101(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
                 wait for SAMPLE_CLK_PERIOD;
             end loop; 
             
             -- 13.3 MHz carrier test signal 
-            FControl <= std_logic_vector(to_unsigned(21, FControl'length)); 
+            FControl <= std_logic_vector(to_unsigned(16, FControl'length)); 
             wait for CLK_PERIOD; 
             for i in 0 to Test133'length - 1 loop
                 -- shift and quantize test input from [-1, 1] to 16 bits
