@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="395500000001fs"></ZoomEndTime>
-      <Cursor1Time time="116517500000fs"></Cursor1Time>
+      <ZoomStartTime time="437500000000fs"></ZoomStartTime>
+      <ZoomEndTime time="837000000001fs"></ZoomEndTime>
+      <Cursor1Time time="550000000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="125"></NameColumnWidth>
-      <ValueColumnWidth column_width="59"></ValueColumnWidth>
+      <NameColumnWidth column_width="118"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="13" />
+   <WVObjectSize size="14" />
    <wvobject fp_name="/MixerTB/END_SIM" type="other">
       <obj_property name="ElementShortName">END_SIM</obj_property>
       <obj_property name="ObjectShortName">END_SIM</obj_property>
@@ -57,13 +57,17 @@
       <obj_property name="ElementShortName">Sig1</obj_property>
       <obj_property name="ObjectShortName">Sig1</obj_property>
    </wvobject>
-   <wvobject fp_name="/MixerTB/PhaseUp" type="logic">
-      <obj_property name="ElementShortName">PhaseUp</obj_property>
-      <obj_property name="ObjectShortName">PhaseUp</obj_property>
+   <wvobject fp_name="/MixerTB/UUTP/SigIn1Deb" type="logic">
+      <obj_property name="ElementShortName">SigIn1Deb</obj_property>
+      <obj_property name="ObjectShortName">SigIn1Deb</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/FOutPLL" type="logic">
       <obj_property name="ElementShortName">FOutPLL</obj_property>
       <obj_property name="ObjectShortName">FOutPLL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/PhaseUp" type="logic">
+      <obj_property name="ElementShortName">PhaseUp</obj_property>
+      <obj_property name="ObjectShortName">PhaseUp</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/PhaseDown" type="logic">
       <obj_property name="ElementShortName">PhaseDown</obj_property>
@@ -76,6 +80,14 @@
    <wvobject fp_name="/MixerTB/UUTNCO/FControl" type="array">
       <obj_property name="ElementShortName">FControl[5:0]</obj_property>
       <obj_property name="ObjectShortName">FControl[5:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/PhaseErr" type="array">
       <obj_property name="ElementShortName">PhaseErr[2:0]</obj_property>

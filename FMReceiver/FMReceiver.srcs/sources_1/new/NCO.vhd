@@ -53,14 +53,14 @@ architecture NCO of NCO is
 	   if rising_edge(Clk) and Reset = '1' then 
 	       -- accumulate control 
 	       -- TODO convert to signed, direct add 
-	       --if DivCount = 0 then --TODO slow increments
+	       if DivCount = 0 then --TODO slow increments
 	       if FAdd(2) = '1' and (FControl < 61) then --TODO gen
 	           FControl <= FControl + unsigned(FAdd(1 downto 0)); -- TODO wraps
 	           
 	       elsif FAdd(2) = '0' and FControl > 2 then 
 	           FControl <= FControl - unsigned(not FAdd(1 downto 0)); --TODO swap aa
 	       end if; 
-	       --end if; 
+	       end if; 
 	       
 	       -- Check if the counter has passed the maximum accumulation value 
 	       if Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) > MAX_COUNT_2 then 
