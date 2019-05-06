@@ -30,23 +30,37 @@ entity NCO is
 end NCO; 
 
 architecture NCO of NCO is 
-    signal FControl : unsigned(4 downto 0); --TODO 
+    signal FControl : unsigned(FCONT_BITS downto 0);
 	signal Count : unsigned(MAX_COUNT_BITS_2 downto 0); 
 	signal SigOut : std_logic; 
 	
-	begin 
+	signal DivCount : unsigned(4 downto 0); 
 	
+	begin 
+	    -- Counter for decimated comb stages, which use every Rth sample 
+    ClkDiv: process(Clk) 
+        begin 
+        if Reset = '0' then 
+            DivCount <= (others => '0'); -- reset counter if reset 
+        elsif rising_edge(Clk)  then 
+            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
+        end if; 
+
+    end process; 
+    
 	process(clk)
 	   begin
 	   if rising_edge(Clk) and Reset = '1' then 
 	       -- accumulate control 
 	       -- TODO convert to signed, direct add 
-	       if FAdd(2) = '1' and (FControl < 29) then --TODO gen
+	       --if DivCount = 0 then --TODO slow increments
+	       if FAdd(2) = '1' and (FControl < 61) then --TODO gen
 	           FControl <= FControl + unsigned(FAdd(1 downto 0)); -- TODO wraps
 	           
 	       elsif FAdd(2) = '0' and FControl > 2 then 
 	           FControl <= FControl - unsigned(not FAdd(1 downto 0)); --TODO swap aa
 	       end if; 
+	       --end if; 
 	       
 	       -- Check if the counter has passed the maximum accumulation value 
 	       if Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) > MAX_COUNT_2 then 

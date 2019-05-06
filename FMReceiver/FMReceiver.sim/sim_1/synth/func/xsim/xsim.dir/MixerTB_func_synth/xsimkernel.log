@@ -1,0 +1,7 @@
+Running: xsim.dir/MixerTB_func_synth/xsimk.exe -simmode gui -wdb MixerTB_func_synth.wdb -simrunnum 0 -socket 50526
+Design successfully loaded
+Design Loading Memory Usage: 6416 KB (Peak: 6416 KB)
+Design Loading CPU Usage: 46 ms
+Simulation completed
+Simulation Memory Usage: 15172 KB (Peak: 15172 KB)
+Simulation CPU Usage: 2359 ms

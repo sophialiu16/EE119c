@@ -38,30 +38,67 @@ architecture Arch of PhaseDetector is
     signal PhaseDownInt : std_logic;
     signal PhaseUpInt   : std_logic; 
     signal PDReset : std_logic; 
+    
+    --signal Count : unsigned(5 downto 0); 
+    --signal Rise : std_logic; 
+    signal SigIn1Deb : std_logic; 
 	begin 
 	
-	-- typical phase detector implementation, 2 dffs 
-	process(SigIn1, Reset, PDReset) 
-	   begin 
-	   if Reset = '0' or PDReset = '1' then 
-	       PhaseUpInt <= '0';
-	   elsif rising_edge(SigIn1) then-- and PDReset = '0' and Reset = '1' then 
-	       PhaseUpInt <= '1'; -- set input active on signal edge 
-	   end if;  
+	-- debounce sigin1??
+    SigDeb: process(Clk, SigIn1) 
+        variable pressed: std_logic := '0'; --- '0' if button unpressed, '1' if pressed
+        variable counter : integer range 0 to 10 := 0;
+        begin 
+        if rising_edge(clk) then 
+        if (pressed = '0' and SigIn1 = '0' and counter /= 10) then
+        counter := counter + 1;    
+            if counter = 10 then
+                pressed := '1';
+            end if;
+       
+        elsif (pressed = '0' and SigIn1 = '1') then
+            counter := 0;
+       
+        elsif (pressed = '1'  and SigIn1 = '1' and counter /= 10) then
+            counter := counter + 1;    
+            if counter = 10 then
+                pressed := '0';
+            end if;
+           
+        elsif(pressed = '1' and SigIn1 = '0') then
+            counter := 0;
+        end if;
+        
+        if Reset = '0' then 
+            counter := 0; 
+        end if; 
+        end if; 
+        SigIn1Deb <= not pressed; 
     end process; 
+    
+	
+	PDReset <= SigIn1 and SigIn2; 
+	--PhaseDown <= PhaseDownInt; 
+	--PhaseUp <= PhaseUpInt; 
 	
 	process(SigIn2, Reset, PDReset) 
 	   begin 
 	   if Reset = '0' or PDReset = '1' then -- reset signal 
-	       PhaseDownInt <= '0'; 
+	       PhaseDown <= '0'; 
 	   elsif rising_edge(SigIn2) then --and PDReset = '0' and Reset = '1' then 
-	       PhaseDownInt <= '1'; -- set input active on signal edge 
+	       PhaseDown <= '1'; -- set input active on signal edge 
 	   end if; 
     end process; 
     
-	PDReset <= SigIn1 and SigIn2; 
-	PhaseDown <= PhaseDownInt; 
-	PhaseUp <= PhaseUpInt; 
+	-- typical phase detector implementation, 2 dffs 
+	process(SigIn1Deb, Reset, PDReset) 
+	   begin 
+	   if Reset = '0' or PDReset = '1' then 
+	       PhaseUp <= '0';
+	   elsif rising_edge(SigIn1Deb) then-- and PDReset = '0' and Reset = '1' then 
+	       PhaseUp <= '1'; -- set input active on signal edge 
+	   end if;  
+    end process; 
 
 	   
 	-- TODO  

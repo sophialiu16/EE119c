@@ -1,0 +1,22 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.sim/sim_1/synth/func/xsim/MixerTB_func_synth.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'LO'
+INFO: [VRFC 10-3107] analyzing entity 'Mixer'
+INFO: [VRFC 10-3107] analyzing entity 'Receiver'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/RecConstants.vhd" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/BPF.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'BPF'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/LO.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'LO'
+WARNING: [VRFC 10-3607] overwriting existing primary unit 'lo' [C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/LO.vhd:34]
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/LPF.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'LoopFilter'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/Mixer.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'Mixer'
+WARNING: [VRFC 10-3607] overwriting existing primary unit 'mixer' [C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/Mixer.vhd:30]
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/TestVectors.vhd" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/PhaseDetector.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'PhaseDetector'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/NCO.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'NCO'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.srcs/sources_1/new/MixerTB.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'MixerTB'

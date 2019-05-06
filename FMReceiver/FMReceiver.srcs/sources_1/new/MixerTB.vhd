@@ -108,6 +108,7 @@ architecture TB_ARCH of MixerTB is
     signal PhaseUp : std_logic; 
     signal PhaseDown : std_logic;
     
+    signal Sig1 : std_logic; 
     signal PhaseDownLPF : std_logic_vector(1 downto 0); 
     signal PhaseUpLPF : std_logic_vector(1 downto 0); 
     signal PhaseErr : std_logic_vector(2 downto 0);
@@ -155,6 +156,7 @@ begin
         PhaseDown => PhaseDown,
         PhaseUp => PhaseUp
     );
+        Sig1 <= FilterOut(FILTER_BITS);
     
     UUTF2: LoopFilter
         port map(

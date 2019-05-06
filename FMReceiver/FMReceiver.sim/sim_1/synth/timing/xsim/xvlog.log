@@ -1,0 +1,5 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Soph/Documents/College/Senior/EE119c/FMReceiver/FMReceiver.sim/sim_1/synth/timing/xsim/MixerTB_time_synth.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module LO
+INFO: [VRFC 10-311] analyzing module Mixer
+INFO: [VRFC 10-311] analyzing module Receiver
+INFO: [VRFC 10-311] analyzing module glbl
