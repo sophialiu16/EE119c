@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="40953916475fs"></ZoomStartTime>
-      <ZoomEndTime time="46798916476fs"></ZoomEndTime>
-      <Cursor1Time time="17708042000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="23480000001fs"></ZoomEndTime>
+      <Cursor1Time time="7617500000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="116"></NameColumnWidth>
-      <ValueColumnWidth column_width="104"></ValueColumnWidth>
+      <ValueColumnWidth column_width="99"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="10" />
+   <WVObjectSize size="12" />
    <wave_markers>
       <marker time="382902696000" label="" />
       <marker time="382957496000" label="" />
@@ -46,8 +46,8 @@
       <obj_property name="ObjectShortName">FOut</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/CountOut" type="array">
-      <obj_property name="ElementShortName">CountOut[10:0]</obj_property>
-      <obj_property name="ObjectShortName">CountOut[10:0]</obj_property>
+      <obj_property name="ElementShortName">CountOut[9:0]</obj_property>
+      <obj_property name="ObjectShortName">CountOut[9:0]</obj_property>
       <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
       <obj_property name="CellHeight">100</obj_property>
    </wvobject>
@@ -81,11 +81,16 @@
       <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
       <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
-   <wvobject fp_name="/MixerTB/PhaseOut" type="array">
-      <obj_property name="ElementShortName">PhaseOut[39:0]</obj_property>
-      <obj_property name="ObjectShortName">PhaseOut[39:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
-      <obj_property name="CellHeight">100</obj_property>
-      <obj_property name="isExpanded"></obj_property>
+   <wvobject fp_name="/MixerTB/PhaseUp" type="logic">
+      <obj_property name="ElementShortName">PhaseUp</obj_property>
+      <obj_property name="ObjectShortName">PhaseUp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/PhaseDown" type="logic">
+      <obj_property name="ElementShortName">PhaseDown</obj_property>
+      <obj_property name="ObjectShortName">PhaseDown</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/FOut" type="logic">
+      <obj_property name="ElementShortName">FOut</obj_property>
+      <obj_property name="ObjectShortName">FOut</obj_property>
    </wvobject>
 </wave_config>

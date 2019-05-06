@@ -63,11 +63,32 @@ architecture TB_ARCH of MixerTB is
             SigIn1 :  in  std_logic;--_vector(FILTER_BITS downto 0); -- Signal input 1  
             SigIn2 :  in  std_logic;--_vector(FILTER_BITS downto 0); -- Signal input 2, changing freq  
             Clk   :  in  std_logic; -- system ( sample??) clock input  
+            Reset : in std_logic;
             PhaseDown : out std_logic; 
             PhaseUp : out std_logic --(FILTER_BITS downto 0) -- num clock diff for zero crossings 
         );
     end component; 
     
+    component LoopFilter is 
+        port(
+            Clk   :  in  std_logic; -- system ( sample?) clock input  
+            PhaseDown : in std_logic; 
+            PhaseUp : in std_logic; 
+            PhaseDownLPF : out std_logic_vector(1 downto 0); 
+            PhaseUpLPF : out std_logic_vector(1 downto 0); 
+            PhaseErr : out std_logic_vector(2 downto 0)  
+        );
+    end component; 
+
+--    component NCO is 
+--        port(
+--            Clk         : in  std_logic;    -- 1-bit system clock 
+--            Reset       : in std_logic;     -- 1-bit active low reset input
+--            FAdd        : in  std_logic_vector(2 downto 0); -- accumulating input 
+--            FOutPLL     : out  std_logic   -- 1-bit oscillator output
+--        );
+--    end component; 
+
     -- Signal used to stop clock signal generators
     signal  END_SIM  :  BOOLEAN := FALSE;
     signal  Clk     : std_logic; -- system clock
@@ -86,6 +107,12 @@ architecture TB_ARCH of MixerTB is
     --signal PhaseOut : std_logic_vector(FILTER_BITS downto 0);
     signal PhaseUp : std_logic; 
     signal PhaseDown : std_logic;
+    
+    signal PhaseDownLPF : std_logic_vector(1 downto 0); 
+    signal PhaseUpLPF : std_logic_vector(1 downto 0); 
+    signal PhaseErr : std_logic_vector(2 downto 0);
+    
+    signal FOutPLL : std_logic;
     
 begin
     -- test components
@@ -121,12 +148,30 @@ begin
     UUTP: PhaseDetector 
         port map (
         SigIn1 => FilterOut(FILTER_BITS),
-        SigIn2 => FOut,  
+        SigIn2 => FOutPLL,  
         Clk   => Clk, 
+        Reset => Reset, 
         PhaseDown => PhaseDown,
         PhaseUp => PhaseUp
     );
-        
+    
+    UUTF2: LoopFilter
+        port map(
+            Clk         => Clk,  
+            PhaseDown   => PhaseDown, 
+            PhaseUp     => PhaseUp, 
+            PhaseDownLPF    => PhaseDownLPF, 
+            PhaseUpLPF      => PhaseUpLPF,
+            PhaseErr        => PhaseErr
+        );
+    
+--    UUTNCO: NCO 
+--        port map(
+--            Clk     => Clk, 
+--            Reset   => Reset, 
+--            FAdd    => PhaseErr,
+--            FOutPLL  => FOutPLL
+--        );
         process
             variable  i  :  integer;        -- general loop indices
             variable  j  :  integer;
@@ -214,5 +259,14 @@ configuration TESTBENCH_FOR_MIXER of MixerTB is
         for UUTF : BPF
             use entity work.BPF;
         end for;
+        for UUTP: PhaseDetector
+            use entity work.PhaseDetector;
+        end for;
+        for UUTF2: LoopFilter
+            use entity work.LoopFilter;
+        end for;
+--        for UUTNCO: NCO
+--            use entity work.NCO;
+--        end for;
     end for;
 end TESTBENCH_FOR_MIXER;

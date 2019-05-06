@@ -18,5 +18,6 @@ Compiling architecture lo of entity xil_defaultlib.LO [lo_default]
 Compiling architecture mixer of entity xil_defaultlib.Mixer [mixer_default]
 Compiling architecture bpf of entity xil_defaultlib.BPF [\BPF(n=3,r=256)\]
 Compiling architecture arch of entity xil_defaultlib.PhaseDetector [phasedetector_default]
+Compiling architecture lpf of entity xil_defaultlib.LoopFilter [loopfilter_default]
 Compiling architecture tb_arch of entity xil_defaultlib.mixertb
 Built simulation snapshot MixerTB_behav
