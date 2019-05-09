@@ -234,6 +234,7 @@ begin
             end loop; 
             end loop; 
             
+            -- 17.3 MHz carrier test
             FControl <= std_logic_vector(to_unsigned(36, FControl'length)); 
             wait for CLK_PERIOD; 
             for j in 0 to 3 loop

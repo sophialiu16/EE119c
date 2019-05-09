@@ -35,7 +35,7 @@ architecture NCO of NCO is
 	signal SigOut : std_logic; 
 	
 	signal DivCount : unsigned(2 downto 0); 
-	constant ERRDIV : natural := 42;
+	constant ERRDIV : natural := 43;
 	
 	begin 
 	    -- divided b/c frequency changing too quickly 
@@ -56,17 +56,18 @@ architecture NCO of NCO is
 	       -- TODO convert to signed, direct add 
 	       --if DivCount = 0 then --TODO slow increments
 	       if FAdd(ERR_BITS) = '1' then --and (FControl < 25810) then --TODO gen
-	           if FControl + unsigned(FAdd(ERR_BITS - 1 downto ERRDIV)) >= CountArray2'length then 
+	           if FControl + ('0' & FAdd(ERR_BITS - 1)) >= CountArray2'length then 
 	               FControl <= to_unsigned(CountArray2'length - 1, FControl'length); 
 	           else 
-	               FControl <= FControl + (unsigned(FAdd(ERR_BITS - 1 downto ERRDIV))); --TODO up/down input
+	               FControl <= FControl + ('0' & FAdd(ERR_BITS - 1)); --(unsigned(FAdd(ERR_BITS - 1 downto ERRDIV))); --TODO up/down input
 	           end if; 
 	           
 	       elsif FAdd(ERR_BITS) = '0' then 
-	           if FControl < unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV)) then
-	               FControl <= (others => '0'); 
-	           else 
-	               FControl <= FControl - (unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV))); 
+--	           if FControl < unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV)) then
+--	               FControl <= (others => '0'); 
+--	           else 
+	           if FControl > 1 then 
+	               FControl <= FControl - ('0' & not FAdd(ERR_BITS - 1));--(unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV))); 
 	           end if; 
 	       end if; 
 	       --end if; 
