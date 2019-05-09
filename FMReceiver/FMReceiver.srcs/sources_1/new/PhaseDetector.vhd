@@ -35,9 +35,12 @@ entity PhaseDetector is
 end PhaseDetector; 
 
 architecture Arch of PhaseDetector is 
-    --signal PhaseDownInt : std_logic;
-    --signal PhaseUpInt   : std_logic; 
+    signal PhaseDownInt : std_logic;
+    signal PhaseUpInt   : std_logic; 
+    signal PhaseDown0 : std_logic;
+    signal PhaseUp0   : std_logic; 
     signal PDReset : std_logic; 
+    signal DivCount : unsigned(1 downto 0); 
     
     signal SigIn1Deb : std_logic; 
     signal DebCount1 : unsigned(3 downto 0);
@@ -77,26 +80,44 @@ architecture Arch of PhaseDetector is
         end if; 
     end process; 
 	
-	PDReset <= SigIn1 and SigIn2; 
-	--PhaseDown <= PhaseDownInt; 
-	--PhaseUp <= PhaseUpInt; 
+	PDReset <= PhaseDownInt and PhaseUpInt; --SigIn1 and SigIn2; 
+	PhaseDown <= PhaseDown0; 
+	PhaseUp <= PhaseUp0; 
+	
+	-- delay for phase reset
+    ClkDiv: process(Clk) 
+        begin 
+        if Reset = '0' then 
+            DivCount <= (others => '0'); -- reset counter if reset 
+        elsif rising_edge(Clk)  then 
+            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
+        end if; 
+    end process; 
+    
+     process(Clk) 
+        begin 
+        if rising_edge(Clk) then-- and DivCount = 0 then 			
+            PhaseDownInt <= PhaseDown0; 
+            PhaseUpInt <= PhaseUp0; 
+        end if; 
+    end process; 
 	
 	-- typical phase detector implementation, 2 dffs
 	process(SigIn1Deb, Reset, PDReset) 
 	   begin 
 	   if Reset = '0' or PDReset = '1' then 
-	       PhaseUp <= '0';
+	       PhaseUp0 <= '0';
 	   elsif rising_edge(SigIn1Deb) then-- and PDReset = '0' and Reset = '1' then 
-	       PhaseUp <= '1'; -- set input active on signal edge 
+	       PhaseUp0 <= '1'; -- set input active on signal edge 
 	   end if;  
     end process; 
     
 	process(SigIn2, Reset, PDReset) 
 	   begin 
 	   if Reset = '0' or PDReset = '1' then -- reset signal 
-	       PhaseDown <= '0'; 
+	       PhaseDown0 <= '0'; 
 	   elsif rising_edge(SigIn2) then --and PDReset = '0' and Reset = '1' then 
-	       PhaseDown <= '1'; -- set input active on signal edge 
+	       PhaseDown0 <= '1'; -- set input active on signal edge 
 	   end if; 
     end process;
 	   

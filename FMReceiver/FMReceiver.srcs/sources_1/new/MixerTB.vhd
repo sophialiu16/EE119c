@@ -211,7 +211,7 @@ begin
             FControl <= (others => '0'); 
             wait for CLK_PERIOD;
             Reset <= '1'; 
-            
+            for j in 0 to 5 loop 
             for i in 0 to Test101'length - 1 loop
                 -- shift and quantize test input from [-1, 1] to 16 bits
                 TestSig := Test101(i)*(2.0**(15)-1.0);
@@ -219,16 +219,19 @@ begin
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
                 wait for SAMPLE_CLK_PERIOD;
             end loop; 
+            end loop; 
             
             -- 13.3 MHz carrier test signal 
             FControl <= std_logic_vector(to_unsigned(16, FControl'length)); 
             wait for CLK_PERIOD; 
+            for j in 0 to 5 loop
             for i in 0 to Test133'length - 1 loop
                 -- shift and quantize test input from [-1, 1] to 16 bits
                 TestSig := Test133(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
                 wait for SAMPLE_CLK_PERIOD;
+            end loop; 
             end loop; 
             
             END_SIM <= true;

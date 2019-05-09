@@ -57,8 +57,8 @@ architecture LPF of LoopFilter is
     
     CICUp : entity work.BPF
 		  generic map(
-            N   => FILTER_N, 
-            R   => 128,
+            N   => 5, 
+            R   => 512,
             BITS_IN => 1,
             BITS_OUT => ERR_BITS - 1
         )
@@ -71,10 +71,10 @@ architecture LPF of LoopFilter is
         
     CICDown : entity work.BPF
 		  generic map(
-            N   => FILTER_N, 
-            R   => 128,
+            N   => 5, 
+            R   => 512,
             BITS_IN => 1,
-            BITS_OUT => 22
+            BITS_OUT => ERR_BITS - 1
         )
         port map(
             SigIn   => PhaseDown1,

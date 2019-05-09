@@ -30,11 +30,12 @@ entity NCO is
 end NCO; 
 
 architecture NCO of NCO is 
-    signal FControl : unsigned(ERR_BITS - 1 downto 0);--FCONT_BITS downto 0);
+    signal FControl : unsigned(FCONT_BITS downto 0);--FCONT_BITS downto 0);
 	signal Count : unsigned(MAX_COUNT_BITS_2 downto 0); 
 	signal SigOut : std_logic; 
 	
 	signal DivCount : unsigned(2 downto 0); 
+	constant ERRDIV : natural := 42;
 	
 	begin 
 	    -- divided b/c frequency changing too quickly 
@@ -53,22 +54,22 @@ architecture NCO of NCO is
 	   if rising_edge(Clk) and Reset = '1' then 
 	       -- accumulate control 
 	       -- TODO convert to signed, direct add 
-	       if DivCount = 0 then --TODO slow increments
-	       if FAdd(2) = '1' then --and (FControl < 25810) then --TODO gen
-	           if to_integer(FControl) + to_integer(unsigned(FAdd(ERR_BITS - 1 downto 0))) >= CountArray2'length then 
+	       --if DivCount = 0 then --TODO slow increments
+	       if FAdd(ERR_BITS) = '1' then --and (FControl < 25810) then --TODO gen
+	           if FControl + unsigned(FAdd(ERR_BITS - 1 downto ERRDIV)) >= CountArray2'length then 
 	               FControl <= to_unsigned(CountArray2'length - 1, FControl'length); 
 	           else 
-	               FControl <= FControl + (unsigned(FAdd(ERR_BITS - 1 downto 0))); --TODO up/down input
+	               FControl <= FControl + (unsigned(FAdd(ERR_BITS - 1 downto ERRDIV))); --TODO up/down input
 	           end if; 
 	           
-	       elsif FAdd(2) = '0' and FControl > 2 then 
-	           if to_integer(FControl) - to_integer(unsigned(not FAdd(ERR_BITS - 1 downto 0))) < 0 then
+	       elsif FAdd(ERR_BITS) = '0' then 
+	           if FControl < unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV)) then
 	               FControl <= (others => '0'); 
 	           else 
-	               FControl <= FControl - (unsigned(not FAdd(ERR_BITS - 1 downto 0))); 
+	               FControl <= FControl - (unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV))); 
 	           end if; 
 	       end if; 
-	       end if; 
+	       --end if; 
 	       
 	        Count <= Count + to_unsigned(COUNT_TABLE_2(to_integer(FControl)), Count'length); 
 	        
