@@ -54,18 +54,26 @@ architecture NCO of NCO is
 	       -- accumulate control 
 	       -- TODO convert to signed, direct add 
 	       if DivCount = 0 then --TODO slow increments
-	       if FAdd(2) = '1' and (FControl < 785) then --TODO gen
-	           FControl <= FControl + unsigned(FAdd(ERR_BITS - 1 downto 0)); -- TODO wraps
+	       if FAdd(2) = '1' then --and (FControl < 25810) then --TODO gen
+	           if to_integer(FControl) + to_integer(unsigned(FAdd(ERR_BITS - 1 downto 0))) >= CountArray2'length then 
+	               FControl <= to_unsigned(CountArray2'length - 1, FControl'length); 
+	           else 
+	               FControl <= FControl + (unsigned(FAdd(ERR_BITS - 1 downto 0))); --TODO up/down input
+	           end if; 
 	           
 	       elsif FAdd(2) = '0' and FControl > 2 then 
-	           FControl <= FControl - unsigned(not FAdd(ERR_BITS - 1 downto 0)); 
+	           if to_integer(FControl) - to_integer(unsigned(not FAdd(ERR_BITS - 1 downto 0))) < 0 then
+	               FControl <= (others => '0'); 
+	           else 
+	               FControl <= FControl - (unsigned(not FAdd(ERR_BITS - 1 downto 0))); 
+	           end if; 
 	       end if; 
 	       end if; 
 	       
-	        Count <= Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length); 
+	        Count <= Count + to_unsigned(COUNT_TABLE_2(to_integer(FControl)), Count'length); 
 	        
 	       -- Check if the counter has passed the maximum accumulation value 
-	       if Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) <= to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) then 
+	       if Count <= to_unsigned(COUNT_TABLE_2(to_integer(FControl)), Count'length) then 
 	           -- if it has, switch the square wave output value 
 	           SigOut <= not(SigOut); 
 	       end if; 
@@ -75,7 +83,7 @@ architecture NCO of NCO is
 	       -- reset counter and output signal on reset 
 	       Count <= (others => '0'); 
 	       SigOut <= '0'; 
-	       FControl <= (4 => '1', others => '0'); -- set to center freq 
+	       FControl <= to_unsigned(12000, FControl'length);--(FControl'length - 1 => '1', others => '0'); -- set to center freq 
 	   end if; 
     end process;
     
