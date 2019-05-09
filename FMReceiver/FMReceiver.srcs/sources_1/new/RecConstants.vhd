@@ -53,7 +53,7 @@ package RecConstants is
         140, 141, 142, 143, 144, 145, 146, 147, 148, 
         149, 150);
 
-    constant ERR_BITS : natural := 45;
+    constant ERR_BITS : natural := 25;--45;
     -- TODO generalize
     -- Oscillator constants; depend on system clock frequency 
     --constant MAX_COUNT_2 : natural := 30000; -- max oscillator count 
