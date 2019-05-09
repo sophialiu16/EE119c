@@ -48,7 +48,9 @@ architecture TB_ARCH of MixerTB is
     component BPF is 
         generic(
             N      : natural := FILTER_N;   -- number of integrator and comb stages
-            R      : natural := FILTER_R    -- rate change factor
+            R      : natural := FILTER_R;    -- rate change factor
+            BITS_IN : natural := ADC_BITS;
+            BITS_OUT : natural := FILTER_BITS
         );
         port(
             SigIn   : in std_logic_vector(ADC_BITS downto 0); -- input signal to be filtered 
@@ -72,11 +74,12 @@ architecture TB_ARCH of MixerTB is
     component LoopFilter is 
         port(
             Clk   :  in  std_logic; -- system ( sample?) clock input  
+            Reset : in std_logic; 
             PhaseDown : in std_logic; 
             PhaseUp : in std_logic; 
-            PhaseDownLPF : out std_logic_vector(1 downto 0); 
-            PhaseUpLPF : out std_logic_vector(1 downto 0); 
-            PhaseErr : out std_logic_vector(2 downto 0)  
+            PhaseDownLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
+            PhaseUpLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
+            PhaseErr : out std_logic_vector(ERR_BITS downto 0) 
         );
     end component; 
 
@@ -84,7 +87,7 @@ architecture TB_ARCH of MixerTB is
         port(
             Clk         : in  std_logic;    -- 1-bit system clock 
             Reset       : in std_logic;     -- 1-bit active low reset input
-            FAdd        : in  std_logic_vector(2 downto 0); -- accumulating input 
+            FAdd        : in  std_logic_vector(ERR_BITS downto 0); -- accumulating input 
             FOutPLL     : out  std_logic   -- 1-bit oscillator output
         );
     end component; 
@@ -109,9 +112,9 @@ architecture TB_ARCH of MixerTB is
     signal PhaseDown : std_logic;
     
     signal Sig1 : std_logic; 
-    signal PhaseDownLPF : std_logic_vector(1 downto 0); 
-    signal PhaseUpLPF : std_logic_vector(1 downto 0); 
-    signal PhaseErr : std_logic_vector(2 downto 0);
+    signal PhaseDownLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
+    signal PhaseUpLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
+    signal PhaseErr : std_logic_vector(ERR_BITS downto 0);
     
     signal FOutPLL : std_logic;
     --signal PDReset : std_logic; 
@@ -138,7 +141,9 @@ begin
     UUTF: BPF 
         generic map(
             N   => FILTER_N, 
-            R   => FILTER_R  
+            R   => FILTER_R,
+            BITS_IN => ADC_BITS,
+            BITS_OUT => FILTER_BITS
         )
         port map(
             SigIn   => IFOut,
@@ -161,6 +166,7 @@ begin
     UUTF2: LoopFilter
         port map(
             Clk         => Clk,  
+            Reset       => Reset, 
             PhaseDown   => PhaseDown, 
             PhaseUp     => PhaseUp, 
             PhaseDownLPF    => PhaseDownLPF, 

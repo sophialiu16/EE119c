@@ -12,12 +12,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="437500000000fs"></ZoomStartTime>
-      <ZoomEndTime time="837000000001fs"></ZoomEndTime>
-      <Cursor1Time time="550000000000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="797789393942fs"></ZoomEndTime>
+      <Cursor1Time time="289940152000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="118"></NameColumnWidth>
+      <NameColumnWidth column_width="114"></NameColumnWidth>
       <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="14" />
@@ -78,8 +78,8 @@
       <obj_property name="ObjectShortName">PDReset</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/UUTNCO/FControl" type="array">
-      <obj_property name="ElementShortName">FControl[5:0]</obj_property>
-      <obj_property name="ObjectShortName">FControl[5:0]</obj_property>
+      <obj_property name="ElementShortName">FControl[9:0]</obj_property>
+      <obj_property name="ObjectShortName">FControl[9:0]</obj_property>
       <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
       <obj_property name="CellHeight">100</obj_property>
       <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>

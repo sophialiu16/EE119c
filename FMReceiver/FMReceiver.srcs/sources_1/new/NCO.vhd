@@ -24,20 +24,20 @@ entity NCO is
     port(
         Clk         : in  std_logic;    -- 1-bit system clock 
         Reset       : in std_logic;     -- 1-bit active low reset input
-        FAdd        : in  std_logic_vector(2 downto 0); -- accumulating input 
+        FAdd        : in  std_logic_vector(ERR_BITS downto 0); -- accumulating input 
         FOutPLL     : out  std_logic   -- 1-bit oscillator output
     );
 end NCO; 
 
 architecture NCO of NCO is 
-    signal FControl : unsigned(FCONT_BITS downto 0);
+    signal FControl : unsigned(ERR_BITS - 1 downto 0);--FCONT_BITS downto 0);
 	signal Count : unsigned(MAX_COUNT_BITS_2 downto 0); 
 	signal SigOut : std_logic; 
 	
-	signal DivCount : unsigned(4 downto 0); 
+	signal DivCount : unsigned(2 downto 0); 
 	
 	begin 
-	    -- Counter for decimated comb stages, which use every Rth sample 
+	    -- divided b/c frequency changing too quickly 
     ClkDiv: process(Clk) 
         begin 
         if Reset = '0' then 
@@ -54,22 +54,20 @@ architecture NCO of NCO is
 	       -- accumulate control 
 	       -- TODO convert to signed, direct add 
 	       if DivCount = 0 then --TODO slow increments
-	       if FAdd(2) = '1' and (FControl < 61) then --TODO gen
-	           FControl <= FControl + unsigned(FAdd(1 downto 0)); -- TODO wraps
+	       if FAdd(2) = '1' and (FControl < 785) then --TODO gen
+	           FControl <= FControl + unsigned(FAdd(ERR_BITS - 1 downto 0)); -- TODO wraps
 	           
 	       elsif FAdd(2) = '0' and FControl > 2 then 
-	           FControl <= FControl - unsigned(not FAdd(1 downto 0)); --TODO swap aa
+	           FControl <= FControl - unsigned(not FAdd(ERR_BITS - 1 downto 0)); 
 	       end if; 
 	       end if; 
 	       
+	        Count <= Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length); 
+	        
 	       -- Check if the counter has passed the maximum accumulation value 
-	       if Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) > MAX_COUNT_2 then 
-	           -- if it has, wrap the counter and switch the square wave output value 
-	           Count <= Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) - MAX_COUNT_2; 
+	       if Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) <= to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length) then 
+	           -- if it has, switch the square wave output value 
 	           SigOut <= not(SigOut); 
-	       else 
-	           -- otherwise continue to accumulate counter 
-	           Count <= Count + to_unsigned(COUNT_TABLE_2(to_integer(unsigned(FControl))), Count'length); 
 	       end if; 
 	       
 	   end if;     

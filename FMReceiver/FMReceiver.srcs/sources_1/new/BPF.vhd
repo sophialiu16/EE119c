@@ -37,19 +37,21 @@ use work.RecConstants.all;
 entity BPF is 
     generic(
         N      : natural := FILTER_N;   -- number of integrator and comb stages
-        R      : natural := FILTER_R    -- rate change factor
+        R      : natural := FILTER_R;    -- rate change factor
+        BITS_IN : natural := ADC_BITS;
+        BITS_OUT : natural := FILTER_BITS
     );
     port(
-        SigIn   : in std_logic_vector(ADC_BITS downto 0); -- input signal to be filtered 
+        SigIn   : in std_logic_vector(BITS_IN downto 0); -- input signal to be filtered 
         Clk     : in std_logic;     -- original sampling clock 
         Reset   : in std_logic;     -- active low reset input 
-        SigOut  : out std_logic_vector(FILTER_BITS downto 0) -- filtered output signal 
+        SigOut  : out std_logic_vector(BITS_OUT downto 0) -- filtered output signal 
     );
 end BPF; 
 
 architecture BPF of BPF is 
     -- intermediate signals 
-    type SumArray is array(integer range <>) of unsigned(FILTER_BITS downto 0); 
+    type SumArray is array(integer range <>) of unsigned(BITS_OUT downto 0); 
     signal IntS : SumArray (N downto 0);    -- integrator sums
     signal CombS : SumArray (N downto 0);   -- comb sums
     signal CombDelay : SumArray (N downto 0);   -- delay registers for comb 
@@ -58,8 +60,8 @@ architecture BPF of BPF is
 	begin 
 
 	-- N cascaded integrator stages; accumulate input 
-	IntS(0)(ADC_BITS downto 0) <= unsigned(SigIn);  -- initial integrator input is from input signal 
-	IntS(0)(FILTER_BITS downto ADC_BITS + 1) <= (others => '0'); 
+	IntS(0)(BITS_IN downto 0) <= unsigned(SigIn);  -- initial integrator input is from input signal 
+	IntS(0)(BITS_OUT downto BITS_IN + 1) <= (others => '0'); 
 	Integrators : for x in 1 to N generate -- cascade N stages 
         process(Clk)
            begin  

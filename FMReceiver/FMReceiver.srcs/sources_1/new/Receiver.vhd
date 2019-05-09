@@ -40,10 +40,9 @@ architecture behavioral of Receiver is
 	 
     signal PhaseUp : std_logic; 
     signal PhaseDown : std_logic;
-    
-    signal PhaseDownLPF : std_logic_vector(1 downto 0); 
-    signal PhaseUpLPF : std_logic_vector(1 downto 0); 
-    signal PhaseErr : std_logic_vector(2 downto 0);
+    signal PhaseDownLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
+    signal PhaseUpLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
+    signal PhaseErr : std_logic_vector(ERR_BITS downto 0);
     
     signal FOutPLL : std_logic;
 	 
@@ -70,7 +69,9 @@ architecture behavioral of Receiver is
         BPF : entity work.BPF 
 		  generic map(
             N   => FILTER_N, 
-            R   => FILTER_R  
+            R   => FILTER_R,
+            BITS_IN => ADC_BITS,
+            BITS_OUT => FILTER_BITS
         )
         port map(
             SigIn   => IFSig,
@@ -92,6 +93,7 @@ architecture behavioral of Receiver is
 		LoopFilter: entity work.LoopFilter
         port map(
             Clk         => Clk,  
+            Reset       => Reset, 
             PhaseDown   => PhaseDown, 
             PhaseUp     => PhaseUp, 
             PhaseDownLPF    => PhaseDownLPF, 
