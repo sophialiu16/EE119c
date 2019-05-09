@@ -118,7 +118,7 @@ architecture TB_ARCH of MixerTB is
     
     signal FOutPLL : std_logic;
     --signal PDReset : std_logic; 
-    
+
 begin
     -- test components
     UUT : LO

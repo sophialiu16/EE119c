@@ -2,7 +2,7 @@
 -- 
 -- Phase detector
 --
--- Desc
+-- Takes two 1-bit inputs and outputs 1-bit up and down phase errors. 
 --
 -- Inputs: 
 --
@@ -25,31 +25,32 @@ use work.RecConstants.all;
 
 entity PhaseDetector is 
     port(
-        SigIn1 :  in  std_logic;--_vector(FILTER_BITS downto 0); -- Signal input 1  
-        SigIn2 :  in  std_logic;--_vector(FILTER_BITS downto 0); -- Signal input 2, changing freq  
-        Clk   :  in  std_logic; -- system ( sample?) clock input  
+        SigIn1 :  in  std_logic;-- Signal input 1  
+        SigIn2 :  in  std_logic;-- Signal input 2, changing freq  
+        Clk   :  in  std_logic; -- system (sample?) clock input  
         Reset : in std_logic; -- active low system reset 
-        PhaseDown : out std_logic; 
-        PhaseUp : out std_logic --(FILTER_BITS downto 0) -- num clock diff for zero crossings 
+        PhaseDown : out std_logic; -- leading phase error (decrease freq)
+        PhaseUp : out std_logic   -- lagging phase error (increase freq)
     );
 end PhaseDetector; 
 
 architecture Arch of PhaseDetector is 
-    signal PhaseDownInt : std_logic;
-    signal PhaseUpInt   : std_logic; 
-    signal PhaseDown0 : std_logic;
-    signal PhaseUp0   : std_logic; 
-    signal PDReset : std_logic; 
-    signal DivCount : unsigned(1 downto 0); 
+    signal PhaseDownInt : std_logic; -- delayed phase down
+    signal PhaseUpInt   : std_logic; -- delayed phase up 
+    signal PhaseDown0 : std_logic;  -- intermediate phase down
+    signal PhaseUp0   : std_logic;  -- intermediate phase up 
+    signal PDReset : std_logic;     -- reset for phase err dffs
+    --signal DivCount : unsigned(1 downto 0); -- larger delay for phase reset 
     
-    signal SigIn1Deb : std_logic; 
+    signal SigIn1Deb : std_logic; -- less noisy signal 1 input 
     signal DebCount1 : unsigned(3 downto 0);
-    signal SigIn2Deb : std_logic; 
+    signal SigIn2Deb : std_logic; -- less noise signal 2 input 
     signal DebCount2 : unsigned(3 downto 0); 
     constant MAX_DEB_COUNT : natural:= 3;  
 	begin 
 	
-	-- TODO input signal seems to glitch
+	-- TODO 
+	-- debouncers b/c input signal seems to glitch
     SigDeb1: process(Clk, SigIn1) 
         begin 
         if rising_edge(Clk) then 
@@ -64,7 +65,6 @@ architecture Arch of PhaseDetector is
             end if; 
         end if; 
     end process; 
-    
     SigDeb2: process(Clk, SigIn2) 
         begin 
         if rising_edge(Clk) then 
@@ -80,20 +80,21 @@ architecture Arch of PhaseDetector is
         end if; 
     end process; 
 	
-	PDReset <= PhaseDownInt and PhaseUpInt; --SigIn1 and SigIn2; 
+	PDReset <= PhaseDownInt and PhaseUpInt; 
 	PhaseDown <= PhaseDown0; 
 	PhaseUp <= PhaseUp0; 
 	
-	-- delay for phase reset
-    ClkDiv: process(Clk) 
-        begin 
-        if Reset = '0' then 
-            DivCount <= (others => '0'); -- reset counter if reset 
-        elsif rising_edge(Clk)  then 
-            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
-        end if; 
-    end process; 
+    -- counter for phase reset delay 
+--    ClkDiv: process(Clk) 
+--        begin 
+--        if Reset = '0' then 
+--            DivCount <= (others => '0'); -- reset counter if reset 
+--        elsif rising_edge(Clk)  then 
+--            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
+--        end if; 
+--    end process; 
     
+    -- delay for phase reset
      process(Clk) 
         begin 
         if rising_edge(Clk) then-- and DivCount = 0 then 			
@@ -107,8 +108,8 @@ architecture Arch of PhaseDetector is
 	   begin 
 	   if Reset = '0' or PDReset = '1' then 
 	       PhaseUp0 <= '0';
-	   elsif rising_edge(SigIn1Deb) then-- and PDReset = '0' and Reset = '1' then 
-	       PhaseUp0 <= '1'; -- set input active on signal edge 
+	   elsif rising_edge(SigIn1Deb) then 
+	       PhaseUp0 <= '1'; -- set phase err active on sig1 edge 
 	   end if;  
     end process; 
     
@@ -116,10 +117,8 @@ architecture Arch of PhaseDetector is
 	   begin 
 	   if Reset = '0' or PDReset = '1' then -- reset signal 
 	       PhaseDown0 <= '0'; 
-	   elsif rising_edge(SigIn2) then --and PDReset = '0' and Reset = '1' then 
-	       PhaseDown0 <= '1'; -- set input active on signal edge 
+	   elsif rising_edge(SigIn2) then 
+	       PhaseDown0 <= '1'; -- set phase active on sig2 edge 
 	   end if; 
     end process;
-	   
-	-- TODO mix, n bit, zero cross
 end Arch; 

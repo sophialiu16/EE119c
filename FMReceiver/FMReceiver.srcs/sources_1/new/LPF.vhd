@@ -2,7 +2,7 @@
 -- 
 -- Loop Filter
 --
--- Desc
+-- Low pass filter for phase error. Not sure if it does much right now. 
 --
 -- Inputs: 
 --
@@ -22,43 +22,32 @@ use work.RecConstants.all;
 
 entity LoopFilter is 
     port(
-        Clk   :  in  std_logic; -- system ( sample?) clock input  
-        Reset : in std_logic; 
-        PhaseDown : in std_logic; 
-        PhaseUp : in std_logic; 
-        PhaseDownLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
-        PhaseUpLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
-        PhaseErr : out std_logic_vector(ERR_BITS downto 0) -- TODO numbits  
+        Clk   :  in  std_logic; -- system (sample?) clock input  
+        Reset : in std_logic;   -- active low system reset 
+        PhaseDown : in std_logic; -- phase down error 
+        PhaseUp : in std_logic;     -- phase up error
+        PhaseDownLPF : out std_logic_vector(ERR_BITS - 1 downto 0); -- filtered phase down, for testing
+        PhaseUpLPF : out std_logic_vector(ERR_BITS - 1 downto 0); -- filtered phase up, for testing
+        PhaseErr : out std_logic_vector(ERR_BITS downto 0)  -- filtered combined phase error
     );
 end LoopFilter; 
 
 architecture LPF of LoopFilter is 
+    -- intermediate signals 
     signal PhaseDown1 : std_logic_vector(1 downto 0); 
     signal PhaseUp1 : std_logic_vector(1 downto 0); 
     signal PhaseDownLPFI : std_logic_vector(ERR_BITS - 1 downto 0); 
     signal PhaseUpLPFI : std_logic_vector(ERR_BITS - 1 downto 0); 
 	begin 
-	
-	-- TODO design filter (generalize?) 
-	
-	-- temporary basic LPF
---	process(Clk) 
---	begin 
---	   if rising_edge(Clk) then 
---	       PhaseDown1 <= PhaseDown; 
---	       PhaseUp1 <= PhaseUp; 
---	   end if; 
---	end process; 
---	--"average"
---	PhaseDownLPFI <= ('0' & PhaseDown1) + ('0' & PhaseDown); 
---	PhaseUpLPFI <= ('0' & PhaseUp1) + ('0' & PhaseUp); 
+	-- assigning intermediate signals
     PhaseUp1 <= '0' & PhaseUp;
     PhaseDown1 <= '0' & PhaseDown;
     
+    -- LPF for up/down phases
     CICUp : entity work.BPF
 		  generic map(
             N   => 5, 
-            R   => 32,
+            R   => 16,
             BITS_IN => 1,
             BITS_OUT => ERR_BITS - 1
         )
@@ -72,7 +61,7 @@ architecture LPF of LoopFilter is
     CICDown : entity work.BPF
 		  generic map(
             N   => 5, 
-            R   => 32,
+            R   => 16,
             BITS_IN => 1,
             BITS_OUT => ERR_BITS - 1
         )
@@ -83,10 +72,9 @@ architecture LPF of LoopFilter is
             SigOut  => PhaseDownLPFI
         );
 	
-	-- combine up/down
+	-- combine filtered up/down for phase error
 	PhaseUpLPF <= std_logic_vector(PhaseUpLPFI); 
 	PhaseDownLPF <= std_logic_vector(PhaseDownLPFI); 
-	
 	PhaseErr <= std_logic_vector(unsigned('1' & PhaseUpLPFI) - unsigned(PhaseDownLPFI)); 
 	
 	

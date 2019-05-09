@@ -1,8 +1,10 @@
 ----------------------------------------------------------------------------
 -- 
--- Loop Filter
+-- NCO 
 --
--- Desc
+-- Oscillator for PLL. Adds to a frequency control value using a phase 
+-- error input, and accumulates that value to generate frequencies 
+-- from 25 kHz to 175 kHz. 
 --
 -- Inputs: 
 --
@@ -24,58 +26,48 @@ entity NCO is
     port(
         Clk         : in  std_logic;    -- 1-bit system clock 
         Reset       : in std_logic;     -- 1-bit active low reset input
-        FAdd        : in  std_logic_vector(ERR_BITS downto 0); -- accumulating input 
+        FAdd        : in  std_logic_vector(ERR_BITS downto 0); -- accumulating input from phase error 
         FOutPLL     : out  std_logic   -- 1-bit oscillator output
     );
 end NCO; 
 
 architecture NCO of NCO is 
-    signal FControl : unsigned(FCONT_BITS downto 0);--FCONT_BITS downto 0);
-	signal Count : unsigned(MAX_COUNT_BITS_2 downto 0); 
-	signal SigOut : std_logic; 
+    signal FControl : unsigned(FCONT_BITS downto 0);    -- frequency control 
+	signal Count : unsigned(MAX_COUNT_BITS_PLL downto 0); -- counts up to generate various frequencies
+	signal SigOut : std_logic;                         -- intermediate output signal 
 	
-	signal DivCount : unsigned(2 downto 0); 
-	constant ERRDIV : natural := ERR_BITS - 2;
+	--signal DivCount : unsigned(4 downto 0); 
+	constant ERRDIV : natural := ERR_BITS - 5; -- use divided phase error input 
 	
 	begin 
-	    -- divided b/c frequency changing too quickly 
-    ClkDiv: process(Clk) 
-        begin 
-        if Reset = '0' then 
-            DivCount <= (others => '0'); -- reset counter if reset 
-        elsif rising_edge(Clk)  then 
-            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
-        end if; 
 
-    end process; 
-    
 	process(clk)
 	   begin
 	   if rising_edge(Clk) and Reset = '1' then 
-	       -- accumulate control 
-	       -- TODO convert to signed, direct add 
-	       --if DivCount = 0 then --TODO slow increments
-	       if FAdd(ERR_BITS) = '1' then --and (FControl < 25810) then --TODO gen
-	           if FControl + (unsigned(FAdd(ERR_BITS - 1 downto ERRDIV))) >= CountArray2'length then 
-	               FControl <= to_unsigned(CountArray2'length - 1, FControl'length); 
+	       -- modify frequency control based on phase error
+	       
+	       if FAdd(ERR_BITS) = '1' then -- increase with positive phase error 
+	           -- max out frequency control to maximum LUT value 
+	           if FControl + (unsigned(FAdd(ERR_BITS - 1 downto ERRDIV))) >= CountArrayPLL'length then 
+	               FControl <= to_unsigned(CountArrayPLL'length - 1, FControl'length); 
 	           else 
-	               FControl <= FControl + (unsigned(FAdd(ERR_BITS - 1 downto ERRDIV))); --TODO up/down input
+	               FControl <= FControl + (unsigned(FAdd(ERR_BITS - 1 downto ERRDIV))); 
 	           end if; 
 	           
-	       elsif FAdd(ERR_BITS) = '0' then 
+	       elsif FAdd(ERR_BITS) = '0' then -- decrease with negative phase error
+	           -- bottom out frequency control to 0  
 	           if FControl < unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV)) then
 	               FControl <= (others => '0'); 
 	           else 
-	           --if FControl > 1 then 
-	               FControl <= FControl - (unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV))); 
+	               FControl <= FControl - (unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV))); -- TODO 
 	           end if; 
-	       end if; 
-	       --end if; 
+	       end if;  
 	       
-	        Count <= Count + to_unsigned(COUNT_TABLE_2(to_integer(FControl)), Count'length); 
+	       -- increment counter, indexing lookup table with frequency control
+	        Count <= Count + to_unsigned(COUNT_TABLE_PLL(to_integer(FControl)), Count'length); 
 	        
 	       -- Check if the counter has passed the maximum accumulation value 
-	       if Count <= to_unsigned(COUNT_TABLE_2(to_integer(FControl)), Count'length) then 
+	       if Count <= to_unsigned(COUNT_TABLE_PLL(to_integer(FControl)), Count'length) then 
 	           -- if it has, switch the square wave output value 
 	           SigOut <= not(SigOut); 
 	       end if; 
@@ -85,10 +77,19 @@ architecture NCO of NCO is
 	       -- reset counter and output signal on reset 
 	       Count <= (others => '0'); 
 	       SigOut <= '0'; 
-	       FControl <= to_unsigned(12000, FControl'length);--(FControl'length - 1 => '1', others => '0'); -- set to center freq 
+	       FControl <= to_unsigned(12000, FControl'length); -- TODO reset to center frequency
 	   end if; 
     end process;
     
     FOutPLL <= SigOut; -- output generated square wave
 	
+	--	-- divided b/c frequency changing too quickly 
+--    ClkDiv: process(Clk) 
+--        begin 
+--        if Reset = '0' then 
+--            DivCount <= (others => '0'); -- reset counter if reset 
+--        elsif rising_edge(Clk)  then 
+--            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
+--        end if; 
+--    end process; 
 end NCO; 
