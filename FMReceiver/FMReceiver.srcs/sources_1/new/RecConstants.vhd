@@ -53,12 +53,12 @@ package RecConstants is
         140, 141, 142, 143, 144, 145, 146, 147, 148, 
         149, 150);
 
-    constant ERR_BITS : natural :=44;
+    constant ERR_BITS : natural := 45;
     -- TODO generalize
     -- Oscillator constants; depend on system clock frequency 
     --constant MAX_COUNT_2 : natural := 30000; -- max oscillator count 
     constant MAX_COUNT_BITS_2 : natural := 23; -- numbits - 1; 
-    constant FCONT_BITS : natural := 25; -- bits-1
+    constant FCONT_BITS : natural := 14; -- bits-1
     -- LUT for oscillator counter 
     type CountArray2 is array(0 to 25870) of natural; 
     constant COUNT_TABLE_2 : CountArray2 := 
