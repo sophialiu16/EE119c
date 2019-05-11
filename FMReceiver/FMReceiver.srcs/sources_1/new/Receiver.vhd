@@ -32,11 +32,13 @@ end Receiver;
 architecture behavioral of Receiver is 
 
     -- internal signals 
+    signal SClk         : std_logic; 
+    
     signal FOut         : std_logic; 
     signal CountOut     : std_logic_vector(MAX_COUNT_BITS downto 0);
     signal IFSig         : std_logic_vector(ADC_BITS downto 0);
     
-	 signal FilterOut   : std_logic_vector(FILTER_BITS downto 0);
+	signal FilterOut   : std_logic_vector(FILTER_BITS downto 0);
 	 
     signal PhaseUp : std_logic; 
     signal PhaseDown : std_logic;
@@ -47,8 +49,17 @@ architecture behavioral of Receiver is
     signal FOutPLL : std_logic;
 	 
     begin 
+    
+        SOsc: entity work.SampleOsc 
+            port map(
+                Clk     => Clk,
+                Reset   => Reset,
+                SClk    => SClk
+            );
+    
         LO : entity work.LO 
         port map (
+            SClk        => SClk,
             Clk         => Clk, 
             Reset       => Reset, 
             FControl    => FControl, 
@@ -60,7 +71,7 @@ architecture behavioral of Receiver is
         port map (
             RF    => RF,  
             LO    => FOut, 
-            Clk   => Clk,
+            Clk   => SClk,
             IFOut => IFSig
         );
         
@@ -75,7 +86,7 @@ architecture behavioral of Receiver is
         )
         port map(
             SigIn   => IFSig,
-            Clk     => Clk, 
+            Clk     => SClk, 
             Reset   => Reset,
             SigOut  => FilterOut
         );
@@ -84,7 +95,7 @@ architecture behavioral of Receiver is
 			port map (
 				  SigIn1 => FilterOut(FILTER_BITS),
 				  SigIn2 => FOutPLL,  
-				  Clk   => Clk, 
+				  Clk   => SClk, 
 				  Reset => Reset, 
 				  PhaseDown => PhaseDown,
 				  PhaseUp => PhaseUp
@@ -92,7 +103,7 @@ architecture behavioral of Receiver is
     
 		LoopFilter: entity work.LoopFilter
         port map(
-            Clk         => Clk,  
+            Clk         => SClk,  
             Reset       => Reset, 
             PhaseDown   => PhaseDown, 
             PhaseUp     => PhaseUp, 

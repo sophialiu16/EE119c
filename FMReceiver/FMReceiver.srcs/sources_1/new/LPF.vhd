@@ -22,7 +22,7 @@ use work.RecConstants.all;
 
 entity LoopFilter is 
     port(
-        Clk   :  in  std_logic; -- system (sample?) clock input  
+        Clk   :  in  std_logic; -- sample clock input  
         Reset : in std_logic;   -- active low system reset 
         PhaseDown : in std_logic; -- phase down error 
         PhaseUp : in std_logic;     -- phase up error

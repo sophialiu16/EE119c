@@ -26,8 +26,17 @@ end MixerTB;
 architecture TB_ARCH of MixerTB is
 
     -- test components
+    component SOsc is
+        port(
+            Clk         : in  std_logic;    -- 1-bit system clock 
+            Reset       : in std_logic;     -- 1-bit active low reset input 
+            SClk        : out  std_logic   -- 1-bit sample clock output
+        );
+    end component;
+    
     component LO is
         port(
+            SClk        : in std_logic;     -- 1-bit sample clock 
             Clk         : in  std_logic;    -- 1-bit system clock 
             Reset       : in std_logic;     -- 1-bit active low reset input
             FControl    : in  std_logic_vector(6 downto 0); -- 6-bit frequency control input 
@@ -85,10 +94,10 @@ architecture TB_ARCH of MixerTB is
 
     component NCO is 
         port(
-            Clk         : in  std_logic;    -- 1-bit system clock 
+            Clk         : in std_logic;    -- 1-bit system clock 
             Reset       : in std_logic;     -- 1-bit active low reset input
-            FAdd        : in  std_logic_vector(ERR_BITS downto 0); -- accumulating input 
-            FOutPLL     : out  std_logic   -- 1-bit oscillator output
+            FAdd        : in std_logic_vector(ERR_BITS downto 0); -- accumulating input 
+            FOutPLL     : out std_logic   -- 1-bit oscillator output
         );
     end component; 
 
@@ -121,8 +130,16 @@ architecture TB_ARCH of MixerTB is
 
 begin
     -- test components
+    UUTSO  : SOsc 
+        port map(
+            Clk     => Clk,
+            Reset   => Reset,
+            SClk    => SClk
+        );
+    
     UUT : LO
         port map(
+            SClk        => SClk,
             Clk         => Clk, 
             Reset       => Reset, 
             FControl    => FControl, 
@@ -134,7 +151,7 @@ begin
         port map(
             RF    => RF,  
             LO    => FOut, 
-            Clk   => Clk,
+            Clk   => SClk,
             IFOut => IFOut
         );
         
@@ -147,7 +164,7 @@ begin
         )
         port map(
             SigIn   => IFOut,
-            Clk     => Clk, 
+            Clk     => SClk, 
             Reset   => Reset,
             SigOut  => FilterOut
         );
@@ -156,7 +173,7 @@ begin
         port map (
         SigIn1 => FilterOut(FILTER_BITS),
         SigIn2 => FOutPLL,  
-        Clk   => Clk, 
+        Clk   => SClk, 
         Reset => Reset, 
         PhaseDown => PhaseDown,
         PhaseUp => PhaseUp
@@ -165,7 +182,7 @@ begin
     
     UUTF2: LoopFilter
         port map(
-            Clk         => Clk,  
+            Clk         => SClk,  
             Reset       => Reset, 
             PhaseDown   => PhaseDown, 
             PhaseUp     => PhaseUp, 
@@ -274,7 +291,10 @@ end TB_ARCH;
 
 configuration TESTBENCH_FOR_MIXER of MixerTB is
     for TB_ARCH
-		  for UUT : LO
+        for UUTSO : SOsc 
+            use entity work.SampleOsc;
+        end for; 
+		for UUT : LO
             use entity work.LO;
         end for;
         for UUTM : Mixer

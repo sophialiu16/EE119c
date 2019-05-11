@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1557405841">
+<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1557569269">
   <File Type="PA-TCL" Name="Receiver.tcl"/>
   <File Type="RDS-PROPCONSTRS" Name="Receiver_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="Receiver_reports.tcl"/>
@@ -48,6 +48,12 @@
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/PhaseDetector.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/SampleOsc.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>

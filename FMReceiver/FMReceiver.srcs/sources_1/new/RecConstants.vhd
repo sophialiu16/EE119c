@@ -22,6 +22,11 @@ package RecConstants is
     constant CLK_FREQ : natural := 200000000; -- 200 MHz system clock 
     constant CLK_PERIOD : time := 5 ns; -- period of clock, for testbench 
     
+    -- constants for generating sample clock 
+    constant SCLK_MAX_COUNT: natural := 100; 
+    constant SCLK_MAX_COUNT_BITS: natural := 8; 
+    constant SCLK_MULT: natural := 39; 
+    
     constant FREQ_STEP : natural := 200000; -- 200 khz between frequencies
     constant NUM_STATIONS : natural := 101; -- 100 total stations, 88.1 to 108.1 MHz 
     
@@ -34,7 +39,7 @@ package RecConstants is
     constant FILTER_M : natural := 1; -- diff delay 
     constant FILTER_R : natural := 256; -- rate change 
     
-    -- Oscillator constants; depend on system clock frequency 
+    -- NCO constants for mixer oscillator; depend on system clock frequency 
     constant MAX_COUNT : natural := 500; -- max oscillator count 
     constant MAX_COUNT_BITS : natural := 9; -- numbits - 1 to achieve max count without wrapping
     

@@ -27,7 +27,7 @@ entity PhaseDetector is
     port(
         SigIn1 :  in  std_logic;-- Signal input 1  
         SigIn2 :  in  std_logic;-- Signal input 2, changing freq  
-        Clk   :  in  std_logic; -- system (sample?) clock input  
+        Clk   :  in  std_logic; -- Sample clock input  
         Reset : in std_logic; -- active low system reset 
         PhaseDown : out std_logic; -- leading phase error (decrease freq)
         PhaseUp : out std_logic   -- lagging phase error (increase freq)
