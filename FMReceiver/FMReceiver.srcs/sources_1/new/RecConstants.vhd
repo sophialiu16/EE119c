@@ -33,11 +33,13 @@ package RecConstants is
     constant ADC_BITS : natural := 15; -- ADC resolution, number of bits -1
     
     -- CIC filter constants 
-    --maximum number of filter bits needed, numbits = ceil(N log2 (RM) + Bin) = 40
-    constant FILTER_BITS : natural := 39; -- numbits - 1
-    constant FILTER_N : natural := 3; -- number of stages
+    constant FILTER_N : natural := 5; -- number of stages
     constant FILTER_M : natural := 1; -- diff delay 
-    constant FILTER_R : natural := 256; -- rate change 
+    constant FILTER_R : natural := 64; -- rate change 
+    -- 3db n=3,  m=1, r=128 at 200khz 
+     --maximum number of filter bits needed, numbits = ceil(N log2 (RM) + Bin) = 40
+    constant FILTER_BITS : natural := FILTER_N * integer(ceil(log2(real(FILTER_R)))) + ADC_BITS; -- numbits - 1
+
     
     -- NCO constants for mixer oscillator; depend on system clock frequency 
     constant MAX_COUNT : natural := 500; -- max oscillator count 

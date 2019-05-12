@@ -51,6 +51,7 @@ end BPF;
 
 architecture BPF of BPF is 
     -- intermediate signals 
+    -- ceil(N log2 (RM) + Bin) - 1
     type SumArray is array(integer range <>) of unsigned(BITS_OUT downto 0); 
     signal IntS : SumArray (N downto 0);    -- integrator sums
     signal CombS : SumArray (N downto 0);   -- comb sums

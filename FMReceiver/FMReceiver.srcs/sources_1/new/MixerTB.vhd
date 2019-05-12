@@ -26,7 +26,7 @@ end MixerTB;
 architecture TB_ARCH of MixerTB is
 
     -- test components
-    component SOsc is
+    component SampleOsc is
         port(
             Clk         : in  std_logic;    -- 1-bit system clock 
             Reset       : in std_logic;     -- 1-bit active low reset input 
@@ -104,7 +104,7 @@ architecture TB_ARCH of MixerTB is
     -- Signal used to stop clock signal generators
     signal  END_SIM  :  BOOLEAN := FALSE;
     signal  Clk     : std_logic; -- system clock
-
+    signal  SClk    :  std_logic; 
     -- internal signals
     signal Reset        : std_logic;
     signal FControl     : std_logic_vector(6 downto 0); 
@@ -130,7 +130,7 @@ architecture TB_ARCH of MixerTB is
 
 begin
     -- test components
-    UUTSO  : SOsc 
+    UUTSO  : SampleOsc 
         port map(
             Clk     => Clk,
             Reset   => Reset,
@@ -291,7 +291,7 @@ end TB_ARCH;
 
 configuration TESTBENCH_FOR_MIXER of MixerTB is
     for TB_ARCH
-        for UUTSO : SOsc 
+        for UUTSO : SampleOsc 
             use entity work.SampleOsc;
         end for; 
 		for UUT : LO

@@ -12,13 +12,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="5066094166667fs"></ZoomStartTime>
-      <ZoomEndTime time="5681594166668fs"></ZoomEndTime>
-      <Cursor1Time time="5268677500000fs"></Cursor1Time>
+      <ZoomStartTime time="7547819710142fs"></ZoomStartTime>
+      <ZoomEndTime time="9681999057972fs"></ZoomEndTime>
+      <Cursor1Time time="9326302500000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="166"></NameColumnWidth>
-      <ValueColumnWidth column_width="93"></ValueColumnWidth>
+      <ValueColumnWidth column_width="89"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="13" />
    <wvobject fp_name="/MixerTB/END_SIM" type="other">
@@ -85,18 +85,6 @@
       <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
       <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
-   <wvobject fp_name="/MixerTB/UUTNCO/FControlFiltered" type="array">
-      <obj_property name="ElementShortName">FControlFiltered[49:0]</obj_property>
-      <obj_property name="ObjectShortName">FControlFiltered[49:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
-      <obj_property name="CellHeight">100</obj_property>
-      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
-      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
-      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
-      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
-      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
-      <obj_property name="AnalogHorizLine">0.000000</obj_property>
-   </wvobject>
    <wvobject fp_name="/MixerTB/PhaseDown" type="logic">
       <obj_property name="ElementShortName">PhaseDown</obj_property>
       <obj_property name="ObjectShortName">PhaseDown</obj_property>
@@ -104,5 +92,9 @@
    <wvobject fp_name="/MixerTB/PhaseUp" type="logic">
       <obj_property name="ElementShortName">PhaseUp</obj_property>
       <obj_property name="ObjectShortName">PhaseUp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/SClk" type="logic">
+      <obj_property name="ElementShortName">SClk</obj_property>
+      <obj_property name="ObjectShortName">SClk</obj_property>
    </wvobject>
 </wave_config>

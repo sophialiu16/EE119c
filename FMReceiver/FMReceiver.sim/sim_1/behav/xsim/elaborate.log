@@ -14,9 +14,10 @@ Compiling package ieee.numeric_std
 Compiling package ieee.math_real
 Compiling package xil_defaultlib.recconstants
 Compiling package xil_defaultlib.testvectors
+Compiling architecture nco of entity xil_defaultlib.SampleOsc [sampleosc_default]
 Compiling architecture lo of entity xil_defaultlib.LO [lo_default]
 Compiling architecture mixer of entity xil_defaultlib.Mixer [mixer_default]
-Compiling architecture bpf of entity xil_defaultlib.BPF [\BPF(n=3,r=256,bits_in=15,bits_o...]
+Compiling architecture bpf of entity xil_defaultlib.BPF [\BPF(n=5,r=64,bits_in=15,bits_ou...]
 Compiling architecture arch of entity xil_defaultlib.PhaseDetector [phasedetector_default]
 Compiling architecture bpf of entity xil_defaultlib.BPF [\BPF(n=5,r=16,bits_in=1,bits_out...]
 Compiling architecture lpf of entity xil_defaultlib.LoopFilter [loopfilter_default]
