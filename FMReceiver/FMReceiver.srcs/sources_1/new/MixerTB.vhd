@@ -94,7 +94,7 @@ architecture TB_ARCH of MixerTB is
 
     component NCO is 
         port(
-            Clk         : in std_logic;    -- 1-bit system clock 
+            Clk         : in std_logic;    -- 1-bit sample clock 
             Reset       : in std_logic;     -- 1-bit active low reset input
             FAdd        : in std_logic_vector(ERR_BITS downto 0); -- accumulating input 
             FOutPLL     : out std_logic   -- 1-bit oscillator output
@@ -193,7 +193,7 @@ begin
     
     UUTNCO: NCO 
         port map(
-            Clk     => Clk, 
+            Clk     => SClk, 
             Reset   => Reset, 
             FAdd    => PhaseErr,
             FOutPLL  => FOutPLL

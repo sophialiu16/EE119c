@@ -24,7 +24,7 @@ use work.RecConstants.all;
 
 entity NCO is 
     port(
-        Clk         : in  std_logic;    -- 1-bit system clock 
+        Clk         : in  std_logic;    -- 1-bit sample clock 
         Reset       : in std_logic;     -- 1-bit active low reset input
         FAdd        : in  std_logic_vector(ERR_BITS downto 0); -- accumulating input from phase error 
         FOutPLL     : out  std_logic   -- 1-bit oscillator output
@@ -77,7 +77,7 @@ architecture NCO of NCO is
 	       -- reset counter and output signal on reset 
 	       Count <= (others => '0'); 
 	       SigOut <= '0'; 
-	       FControl <= to_unsigned(12000, FControl'length); -- TODO reset to center frequency
+	       FControl <= to_unsigned(7000, FControl'length); -- TODO reset to center frequency
 	   end if; 
     end process;
     

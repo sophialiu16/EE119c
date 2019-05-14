@@ -114,7 +114,7 @@ architecture behavioral of Receiver is
     
 		NCO: entity work.NCO 
         port map(
-            Clk     => Clk, 
+            Clk     => SClk, 
             Reset   => Reset, 
             FAdd    => PhaseErr,
             FOutPLL  => FOutPLL

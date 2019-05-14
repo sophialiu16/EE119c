@@ -51,13 +51,13 @@ architecture Arch of PhaseDetector is
 	
 	-- TODO 
 	-- debouncers b/c input signal seems to glitch
-    SigDeb1: process(Clk, SigIn1) 
+    SigDeb1: process(Clk, SigIn1, Reset) 
         begin 
-        if rising_edge(Clk) then 
-            if Reset = '0' then  
+        if Reset = '0' then 
+            DebCount1 <= (others => '0');
+        elsif rising_edge(Clk) then 
+            if SigIn1Deb = SigIn1 then  
                 DebCount1 <= (others => '0');  
-            elsif SigIn1Deb = SigIn1 then 
-                DebCount1 <= (others => '0'); 
             elsif DebCount1 = MAX_DEB_COUNT  then 
                 SigIn1Deb <= SigIn1; 
         	elsif SigIn1Deb /= SigIn1 then 
@@ -65,13 +65,13 @@ architecture Arch of PhaseDetector is
             end if; 
         end if; 
     end process; 
-    SigDeb2: process(Clk, SigIn2) 
+    SigDeb2: process(Clk, SigIn2, Reset) 
         begin 
-        if rising_edge(Clk) then 
-            if Reset = '0' then  
+        if Reset = '0' then 
+            DebCount2 <= (others => '0'); 
+        elsif rising_edge(Clk) then 
+            if SigIn2Deb = SigIn2 then  
                 DebCount2 <= (others => '0');  
-            elsif SigIn2Deb = SigIn2 then 
-                DebCount2 <= (others => '0'); 
             elsif DebCount2 = MAX_DEB_COUNT  then 
                 SigIn2Deb <= SigIn2; 
         	elsif SigIn2Deb /= SigIn2 then 
@@ -108,16 +108,16 @@ architecture Arch of PhaseDetector is
 	   begin 
 	   if Reset = '0' or PDReset = '1' then 
 	       PhaseUp0 <= '0';
-	   elsif rising_edge(SigIn1Deb) then 
+	   elsif rising_edge(SigIn1Deb) then --Deb) then 
 	       PhaseUp0 <= '1'; -- set phase err active on sig1 edge 
 	   end if;  
     end process; 
     
-	process(SigIn2, Reset, PDReset) 
+	process(SigIn2Deb, Reset, PDReset) 
 	   begin 
 	   if Reset = '0' or PDReset = '1' then -- reset signal 
 	       PhaseDown0 <= '0'; 
-	   elsif rising_edge(SigIn2) then 
+	   elsif rising_edge(SigIn2Deb) then 
 	       PhaseDown0 <= '1'; -- set phase active on sig2 edge 
 	   end if; 
     end process;

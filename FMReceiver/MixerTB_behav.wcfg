@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="7547819710142fs"></ZoomStartTime>
-      <ZoomEndTime time="9681999057972fs"></ZoomEndTime>
-      <Cursor1Time time="9326302500000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="965000001fs"></ZoomEndTime>
+      <Cursor1Time time="23000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="166"></NameColumnWidth>
-      <ValueColumnWidth column_width="89"></ValueColumnWidth>
+      <ValueColumnWidth column_width="81"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="13" />
+   <WVObjectSize size="17" />
    <wvobject fp_name="/MixerTB/END_SIM" type="other">
       <obj_property name="ElementShortName">END_SIM</obj_property>
       <obj_property name="ObjectShortName">END_SIM</obj_property>
@@ -42,8 +42,8 @@
       <obj_property name="ObjectShortName">FControl[6:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/FilterOut" type="array">
-      <obj_property name="ElementShortName">FilterOut[39:0]</obj_property>
-      <obj_property name="ObjectShortName">FilterOut[39:0]</obj_property>
+      <obj_property name="ElementShortName">FilterOut[45:0]</obj_property>
+      <obj_property name="ObjectShortName">FilterOut[45:0]</obj_property>
       <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
       <obj_property name="CellHeight">100</obj_property>
       <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
@@ -72,6 +72,7 @@
       <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
       <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
       <obj_property name="AnalogHorizLine">0.000000</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/PhaseErr" type="array">
       <obj_property name="ElementShortName">PhaseErr[20:0]</obj_property>
@@ -96,5 +97,21 @@
    <wvobject fp_name="/MixerTB/SClk" type="logic">
       <obj_property name="ElementShortName">SClk</obj_property>
       <obj_property name="ObjectShortName">SClk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/UUTP/SigIn1" type="logic">
+      <obj_property name="ElementShortName">SigIn1</obj_property>
+      <obj_property name="ObjectShortName">SigIn1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/UUTP/SigIn2" type="logic">
+      <obj_property name="ElementShortName">SigIn2</obj_property>
+      <obj_property name="ObjectShortName">SigIn2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/UUTP/DebCount1" type="array">
+      <obj_property name="ElementShortName">DebCount1[3:0]</obj_property>
+      <obj_property name="ObjectShortName">DebCount1[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MixerTB/UUTP/DebCount2" type="array">
+      <obj_property name="ElementShortName">DebCount2[3:0]</obj_property>
+      <obj_property name="ObjectShortName">DebCount2[3:0]</obj_property>
    </wvobject>
 </wave_config>

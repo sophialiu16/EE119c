@@ -49,7 +49,7 @@ architecture LO of LO is
 	signal FOutInt: std_logic;     -- intermediate synchronized output signal 
 	begin 
 	
-	process(clk)
+	process(Clk)
 	   begin
 	   if Reset = '0' then 
 	       -- reset counter and output signal on reset 
