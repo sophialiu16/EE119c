@@ -42,8 +42,6 @@ architecture behavioral of Receiver is
 	 
     signal PhaseUp : std_logic; 
     signal PhaseDown : std_logic;
-    signal PhaseDownLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
-    signal PhaseUpLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
     signal PhaseErr : std_logic_vector(ERR_BITS downto 0);
     
     signal FOutPLL : std_logic;
@@ -107,9 +105,7 @@ architecture behavioral of Receiver is
             Reset       => Reset, 
             PhaseDown   => PhaseDown, 
             PhaseUp     => PhaseUp, 
-            PhaseDownLPF    => PhaseDownLPF, 
-            PhaseUpLPF      => PhaseUpLPF,
-            PhaseErr        => PhaseErr
+            PhaseErr    => PhaseErr
         );
     
 		NCO: entity work.NCO 

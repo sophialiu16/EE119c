@@ -26,8 +26,6 @@ entity LoopFilter is
         Reset : in std_logic;   -- active low system reset 
         PhaseDown : in std_logic; -- phase down error 
         PhaseUp : in std_logic;     -- phase up error
-        PhaseDownLPF : out std_logic_vector(ERR_BITS - 1 downto 0); -- filtered phase down, for testing
-        PhaseUpLPF : out std_logic_vector(ERR_BITS - 1 downto 0); -- filtered phase up, for testing
         PhaseErr : out std_logic_vector(ERR_BITS downto 0)  -- filtered combined phase error
     );
 end LoopFilter; 
@@ -36,6 +34,8 @@ architecture LPF of LoopFilter is
     -- intermediate signals  
     signal PhaseDownLPFI : std_logic_vector(ERR_BITS - 1 downto 0); 
     signal PhaseUpLPFI : std_logic_vector(ERR_BITS - 1 downto 0); 
+    signal PhaseErrI : std_logic_vector(ERR_BITS downto 0);
+    
 	begin 
     process(Clk)
     begin 
@@ -66,9 +66,6 @@ architecture LPF of LoopFilter is
         );
 	
 	-- combine filtered up/down for phase error
-	PhaseUpLPF <= std_logic_vector(PhaseUpLPFI); 
-	PhaseDownLPF <= std_logic_vector(PhaseDownLPFI); 
 	PhaseErr <= std_logic_vector(unsigned('1' & PhaseUpLPFI) - unsigned(PhaseDownLPFI)); 
-	
 	
 end LPF; 

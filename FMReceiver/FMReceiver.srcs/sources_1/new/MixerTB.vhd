@@ -86,8 +86,8 @@ architecture TB_ARCH of MixerTB is
             Reset : in std_logic; 
             PhaseDown : in std_logic; 
             PhaseUp : in std_logic; 
-            PhaseDownLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
-            PhaseUpLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
+            --PhaseDownLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
+            --PhaseUpLPF : out std_logic_vector(ERR_BITS - 1 downto 0); 
             PhaseErr : out std_logic_vector(ERR_BITS downto 0) 
         );
     end component; 
@@ -121,8 +121,8 @@ architecture TB_ARCH of MixerTB is
     signal PhaseDown : std_logic;
     
     signal Sig1 : std_logic; 
-    signal PhaseDownLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
-    signal PhaseUpLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
+    --signal PhaseDownLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
+    --signal PhaseUpLPF : std_logic_vector(ERR_BITS - 1 downto 0); 
     signal PhaseErr : std_logic_vector(ERR_BITS downto 0);
     
     signal FOutPLL : std_logic;
@@ -186,8 +186,8 @@ begin
             Reset       => Reset, 
             PhaseDown   => PhaseDown, 
             PhaseUp     => PhaseUp, 
-            PhaseDownLPF    => PhaseDownLPF, 
-            PhaseUpLPF      => PhaseUpLPF,
+            --PhaseDownLPF    => PhaseDownLPF, 
+            --PhaseUpLPF      => PhaseUpLPF,
             PhaseErr        => PhaseErr
         );
     
