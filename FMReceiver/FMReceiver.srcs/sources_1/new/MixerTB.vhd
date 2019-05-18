@@ -224,12 +224,16 @@ begin
             wait for CLK_PERIOD * 1000;
             
             -- 10.1 MHz carrier test signal 
-            Reset <= '0'; 
+            --Reset <= '0'; 
             FControl <= (others => '0'); 
             wait for CLK_PERIOD;
-            Reset <= '1'; 
+            
+            -- catch up to sclk edge ?
+            
+            --Reset <= '1'; 
             for j in 0 to 5 loop 
             for i in 0 to Test101'length - 1 loop
+                --wait until rising_edge(SClk)
                 -- shift and quantize test input from [-1, 1] to 16 bits
                 TestSig := Test101(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
@@ -243,6 +247,7 @@ begin
             wait for CLK_PERIOD; 
             for j in 0 to 2 loop
             for i in 0 to Test133'length - 1 loop
+                --wait until rising_edge(SClk)
                 -- shift and quantize test input from [-1, 1] to 16 bits
                 TestSig := Test133(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
@@ -256,6 +261,7 @@ begin
             wait for CLK_PERIOD; 
             for j in 0 to 3 loop
             for i in 0 to Test173'length - 1 loop
+                --wait until rising_edge(SClk)
                 -- shift and quantize test input from [-1, 1] to 16 bits
                 TestSig := Test173(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 

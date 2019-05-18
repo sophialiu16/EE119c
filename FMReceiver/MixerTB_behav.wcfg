@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="965000001fs"></ZoomEndTime>
-      <Cursor1Time time="23000000fs"></Cursor1Time>
+      <ZoomStartTime time="11206432500000fs"></ZoomStartTime>
+      <ZoomEndTime time="11690932500001fs"></ZoomEndTime>
+      <Cursor1Time time="11609932500000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="166"></NameColumnWidth>
-      <ValueColumnWidth column_width="81"></ValueColumnWidth>
+      <ValueColumnWidth column_width="77"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="17" />
+   <WVObjectSize size="18" />
    <wvobject fp_name="/MixerTB/END_SIM" type="other">
       <obj_property name="ElementShortName">END_SIM</obj_property>
       <obj_property name="ObjectShortName">END_SIM</obj_property>
@@ -57,6 +57,10 @@
       <obj_property name="ElementShortName">SigIn1Deb</obj_property>
       <obj_property name="ObjectShortName">SigIn1Deb</obj_property>
    </wvobject>
+   <wvobject fp_name="/MixerTB/UUTP/SigIn2Deb" type="logic">
+      <obj_property name="ElementShortName">SigIn2Deb</obj_property>
+      <obj_property name="ObjectShortName">SigIn2Deb</obj_property>
+   </wvobject>
    <wvobject fp_name="/MixerTB/FOutPLL" type="logic">
       <obj_property name="ElementShortName">FOutPLL</obj_property>
       <obj_property name="ObjectShortName">FOutPLL</obj_property>
@@ -75,8 +79,8 @@
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/MixerTB/PhaseErr" type="array">
-      <obj_property name="ElementShortName">PhaseErr[20:0]</obj_property>
-      <obj_property name="ObjectShortName">PhaseErr[20:0]</obj_property>
+      <obj_property name="ElementShortName">PhaseErr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">PhaseErr[5:0]</obj_property>
       <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
       <obj_property name="CellHeight">100</obj_property>
       <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
@@ -106,12 +110,28 @@
       <obj_property name="ElementShortName">SigIn2</obj_property>
       <obj_property name="ObjectShortName">SigIn2</obj_property>
    </wvobject>
-   <wvobject fp_name="/MixerTB/UUTP/DebCount1" type="array">
-      <obj_property name="ElementShortName">DebCount1[3:0]</obj_property>
-      <obj_property name="ObjectShortName">DebCount1[3:0]</obj_property>
+   <wvobject fp_name="/MixerTB/UUTF2/PhaseDownLPF" type="array">
+      <obj_property name="ElementShortName">PhaseDownLPF[4:0]</obj_property>
+      <obj_property name="ObjectShortName">PhaseDownLPF[4:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
-   <wvobject fp_name="/MixerTB/UUTP/DebCount2" type="array">
-      <obj_property name="ElementShortName">DebCount2[3:0]</obj_property>
-      <obj_property name="ObjectShortName">DebCount2[3:0]</obj_property>
+   <wvobject fp_name="/MixerTB/UUTF2/PhaseUpLPF" type="array">
+      <obj_property name="ElementShortName">PhaseUpLPF[4:0]</obj_property>
+      <obj_property name="ObjectShortName">PhaseUpLPF[4:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="AnalogYRangeType">ANALOG_YRANGETYPE_AUTO</obj_property>
+      <obj_property name="AnalogYRangeMin">0.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">0.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_HOLD</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
 </wave_config>

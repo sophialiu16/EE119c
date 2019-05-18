@@ -37,13 +37,18 @@ architecture NCO of NCO is
 	signal SigOut : std_logic;                         -- intermediate output signal 
 	
 	--signal DivCount : unsigned(4 downto 0); 
-	constant ERRDIV : natural := ERR_BITS - 5; -- use divided phase error input 
+	constant ERRDIV : natural := 0; -- use divided phase error input 
 	
 	begin 
 
 	process(clk)
 	   begin
-	   if rising_edge(Clk) and Reset = '1' then 
+	   if Reset = '0' then 
+	       -- reset counter and output signal on reset 
+	       Count <= (others => '0'); 
+	       SigOut <= '0'; 
+	       FControl <= to_unsigned(7000, FControl'length); -- TODO reset to center frequency
+	   elsif rising_edge(Clk) then 
 	       -- modify frequency control based on phase error
 	       
 	       if FAdd(ERR_BITS) = '1' then -- increase with positive phase error 
@@ -56,10 +61,10 @@ architecture NCO of NCO is
 	           
 	       elsif FAdd(ERR_BITS) = '0' then -- decrease with negative phase error
 	           -- bottom out frequency control to 0  
-	           if FControl < unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV)) then
+	           if FControl < unsigned(not (FAdd(ERR_BITS - 1 downto ERRDIV))) then
 	               FControl <= (others => '0'); 
 	           else 
-	               FControl <= FControl - (unsigned(not FAdd(ERR_BITS - 1 downto ERRDIV))); -- TODO 
+	               FControl <= FControl - (unsigned(not (FAdd(ERR_BITS - 1 downto ERRDIV)))); -- TODO 
 	           end if; 
 	       end if;  
 	       
@@ -73,12 +78,7 @@ architecture NCO of NCO is
 	       end if; 
 	       
 	   end if;     
-	   if Reset = '0' then 
-	       -- reset counter and output signal on reset 
-	       Count <= (others => '0'); 
-	       SigOut <= '0'; 
-	       FControl <= to_unsigned(7000, FControl'length); -- TODO reset to center frequency
-	   end if; 
+
     end process;
     
     FOutPLL <= SigOut; -- output generated square wave

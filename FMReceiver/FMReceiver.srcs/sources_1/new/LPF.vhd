@@ -33,40 +33,33 @@ entity LoopFilter is
 end LoopFilter; 
 
 architecture LPF of LoopFilter is 
-    -- intermediate signals 
-    signal PhaseDown1 : std_logic_vector(1 downto 0); 
-    signal PhaseUp1 : std_logic_vector(1 downto 0); 
+    -- intermediate signals  
     signal PhaseDownLPFI : std_logic_vector(ERR_BITS - 1 downto 0); 
     signal PhaseUpLPFI : std_logic_vector(ERR_BITS - 1 downto 0); 
 	begin 
-	-- assigning intermediate signals
-    PhaseUp1 <= '0' & PhaseUp;
-    PhaseDown1 <= '0' & PhaseDown;
+    process(Clk)
+    begin 
+    
+    end process; 
     
     -- LPF for up/down phases
-    CICUp : entity work.BPF
+    LPFUP : entity work.FIRLPF
 		  generic map(
-            N   => 5, 
-            R   => 16,
-            BITS_IN => 1,
-            BITS_OUT => ERR_BITS - 1
+            N   => LPF_N
         )
         port map(
-            SigIn   => PhaseUp1,
+            SigIn   => PhaseUp,
             Clk     => Clk, 
             Reset   => Reset,
             SigOut  => PhaseUpLPFI
         );
         
-    CICDown : entity work.BPF
+    LPFDown : entity work.FIRLPF
 		  generic map(
-            N   => 5, 
-            R   => 16,
-            BITS_IN => 1,
-            BITS_OUT => ERR_BITS - 1
+            N   => LPF_N
         )
         port map(
-            SigIn   => PhaseDown1,
+            SigIn   => PhaseDown,
             Clk     => Clk, 
             Reset   => Reset,
             SigOut  => PhaseDownLPFI

@@ -66,11 +66,10 @@ architecture BPF of BPF is
 	Integrators : for x in 1 to N generate -- cascade N stages 
         process(Clk)
            begin  
-            if rising_edge(Clk) and Reset = '1' then 
-                IntS(x) <= IntS(x-1) + IntS(x); -- integrator implementation  
-            end if; 
             if Reset = '0' then 
                 IntS(x) <= (others => '0'); -- set regs to zero if reset 
+            elsif rising_edge(Clk) then 
+                IntS(x) <= IntS(x-1) + IntS(x); -- integrator implementation  
             end if; 
         end process; 
     end generate; 
@@ -78,23 +77,22 @@ architecture BPF of BPF is
     -- Counter for decimated comb stages, which use every Rth sample 
     ClkDiv: process(Clk) 
         begin 
-        if rising_edge(Clk) and Reset = '1' then 
-            Count <= Count + 1;     -- accumulate counter on clk edge
-        end if; 
         if Reset = '0' then 
             Count <= (others => '0'); -- reset counter if reset 
+        elsif rising_edge(Clk) then 
+            Count <= Count + 1;     -- accumulate counter on clk edge
         end if; 
+ 
     end process; 
     
     -- N Comb stages 
     CombInit: process(Clk) -- assign initial inputs for comb stages 
         begin 
         if rising_edge(Clk) and Reset = '1' then 
-            if Count = (Count'range => '0') then -- enabled with counter to down-sample
-                CombS(0) <= IntS(N);            -- input from integrator stages
-            end if; 
             if Reset = '0' then 
                 CombS(0) <= (others => '0');    -- set regs to zero if reset 
+            elsif Count = (Count'range => '0') then -- enabled with counter to down-sample
+                CombS(0) <= IntS(N);            -- input from integrator stages
             end if; 
         end if; 
     end process;  
@@ -108,13 +106,12 @@ architecture BPF of BPF is
 	CombDelayGen: for x in 0 to N-1 generate
         process(Clk)
            begin  
-            if rising_edge(Clk) and Reset = '1' then
+            if Reset = '0' then 
+                CombDelay(x) <= (others => '0');    -- set regs to zero if reset 
+            elsif rising_edge(Clk) then
                 if Count = (Count'range => '0') then  -- enabled with counter to down-sample
                     CombDelay(x) <= CombS(x);       -- store delayed comb inputs 
                 end if; 
-            end if; 
-            if Reset = '0' then 
-                CombDelay(x) <= (others => '0');    -- set regs to zero if reset 
             end if; 
         end process; 
     end generate; 
