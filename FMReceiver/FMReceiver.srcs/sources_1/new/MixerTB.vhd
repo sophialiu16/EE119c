@@ -269,10 +269,23 @@ begin
                 wait for SAMPLE_CLK_PERIOD;
             end loop; 
             end loop;
+
+        -- i dont think the sample rate for this is correct
+            FControl <= (others => '0'); 
+            wait for CLK_PERIOD; 
+            for j in 0 to 3 loop
+            for i in 0 to Test1012'length - 1 loop
+                --wait until rising_edge(SClk)
+                -- shift and quantize test input from [-1, 1] to 16 bits
+                TestSig := Test1012(i)*(2.0**(15)-1.0);
+                TestSig := TestSig + (2.0**(15)-1.0); 
+                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
+                wait for SAMPLE_CLK_PERIOD;
+            end loop; 
+            end loop;
             END_SIM <= true;
             wait;
         end process;
-
         -- process for generating system clock
         CLOCK_CLK : process
         begin
