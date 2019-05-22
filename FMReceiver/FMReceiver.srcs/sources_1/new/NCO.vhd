@@ -24,15 +24,16 @@ use work.RecConstants.all;
 
 entity NCO is 
     port(
-        Clk         : in  std_logic;    -- 1-bit sample clock 
+        Clk         : in std_logic;    -- 1-bit sample clock 
         Reset       : in std_logic;     -- 1-bit active low reset input
-        FAdd        : in  std_logic_vector(ERR_BITS downto 0); -- accumulating input from phase error 
-        FOutPLL     : out  std_logic   -- 1-bit oscillator output
+        FAdd        : in std_logic_vector(ERR_BITS downto 0); -- accumulating input from phase error 
+        FOutPLL     : out std_logic;   -- 1-bit oscillator output
+        FControlOut : out std_logic_vector(FCOUNT_BITS downto 0)
     );
 end NCO; 
 
 architecture NCO of NCO is 
-    signal FControl : unsigned(FCONT_BITS downto 0);    -- frequency control 
+    signal FControl : unsigned(FCOUNT_BITS downto 0);    -- frequency control 
 	signal Count : unsigned(MAX_COUNT_BITS_PLL downto 0); -- counts up to generate various frequencies
 	signal SigOut : std_logic;                         -- intermediate output signal 
 	
@@ -40,7 +41,7 @@ architecture NCO of NCO is
 	constant ERRDIV : natural := 0; -- use divided phase error input 
 	
 	begin 
-
+    FControlOut <= std_logic_vector(FControl); 
 	process(clk)
 	   begin
 	   if Reset = '0' then 
@@ -82,14 +83,4 @@ architecture NCO of NCO is
     end process;
     
     FOutPLL <= SigOut; -- output generated square wave
-	
-	--	-- divided b/c frequency changing too quickly 
---    ClkDiv: process(Clk) 
---        begin 
---        if Reset = '0' then 
---            DivCount <= (others => '0'); -- reset counter if reset 
---        elsif rising_edge(Clk)  then 
---            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
---        end if; 
---    end process; 
 end NCO; 

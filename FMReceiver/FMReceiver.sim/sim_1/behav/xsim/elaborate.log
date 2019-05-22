@@ -22,5 +22,6 @@ Compiling architecture arch of entity xil_defaultlib.PhaseDetector [phasedetecto
 Compiling architecture fir of entity xil_defaultlib.FIRLPF [\FIRLPF(n=5)\]
 Compiling architecture lpf of entity xil_defaultlib.LoopFilter [loopfilter_default]
 Compiling architecture nco of entity xil_defaultlib.NCO [nco_default]
+Compiling architecture behavioral of entity xil_defaultlib.PWM [pwm_default]
 Compiling architecture tb_arch of entity xil_defaultlib.mixertb
 Built simulation snapshot MixerTB_behav

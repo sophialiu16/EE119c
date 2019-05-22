@@ -68,7 +68,7 @@ architecture LO of LO is
 	   end if;     
     end process;
 	
-	-- synchronize lo with sample clock to interface with rest of system 
+	-- synchronize lo with sample clock to interface with rest of system
 	process(SClk)
 	   begin 
 	   if rising_edge(SClk) then 

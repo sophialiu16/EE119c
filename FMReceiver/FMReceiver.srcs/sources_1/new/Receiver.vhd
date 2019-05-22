@@ -20,12 +20,12 @@ use work.RecConstants.all;
 
 entity Receiver is 
         port(
-            Clk         : in  std_logic; -- System clock 
+            Clk         : in std_logic; -- System clock 
             Reset       : in std_logic; -- Active low reset input
             RF          : in std_logic_vector(ADC_BITS downto 0); -- RF input 
             FControl    : in std_logic_vector(6 downto 0); -- Frequency control 
-            IFOut       : out std_logic_vector(ADC_BITS downto 0) -- Oscillator output
-            
+            IFOut       : out std_logic_vector(ADC_BITS downto 0); -- Oscillator output
+            PWMOut      : out std_logic
         );
 end Receiver; 
 
@@ -45,6 +45,7 @@ architecture behavioral of Receiver is
     signal PhaseErr : std_logic_vector(ERR_BITS downto 0);
     
     signal FOutPLL : std_logic;
+    signal FControlOut : std_logic_vector(FCOUNT_BITS downto 0); 
 	 
     begin 
     
@@ -113,7 +114,8 @@ architecture behavioral of Receiver is
             Clk     => SClk, 
             Reset   => Reset, 
             FAdd    => PhaseErr,
-            FOutPLL  => FOutPLL
+            FOutPLL  => FOutPLL,
+            FControlOut => FControlOut
         );
         
 end behavioral; 

@@ -97,7 +97,17 @@ architecture TB_ARCH of MixerTB is
             Clk         : in std_logic;    -- 1-bit sample clock 
             Reset       : in std_logic;     -- 1-bit active low reset input
             FAdd        : in std_logic_vector(ERR_BITS downto 0); -- accumulating input 
-            FOutPLL     : out std_logic   -- 1-bit oscillator output
+            FOutPLL     : out std_logic;   -- 1-bit oscillator output
+            FControlOut : out std_logic_vector(FCOUNT_BITS downto 0)
+        );
+    end component; 
+    
+    component PWM is 
+        port(
+            Clk         : in std_logic; -- Original sampling clock 
+            Reset       : in std_logic; -- Active low reset input
+            SigIn       : in std_logic_vector(FCOUNT_BITS downto 0); -- frequency demodulated (audio) input, sampled at Clk
+            PWMOut      : out std_logic  -- pulse modulated output 
         );
     end component; 
 
@@ -127,7 +137,8 @@ architecture TB_ARCH of MixerTB is
     
     signal FOutPLL : std_logic;
     --signal PDReset : std_logic; 
-
+    signal FControlOut : std_logic_vector(FCOUNT_BITS downto 0);
+    signal PWMOut : std_logic; 
 begin
     -- test components
     UUTSO  : SampleOsc 
@@ -196,7 +207,16 @@ begin
             Clk     => SClk, 
             Reset   => Reset, 
             FAdd    => PhaseErr,
-            FOutPLL  => FOutPLL
+            FOutPLL  => FOutPLL,
+            FControlOut => FControlOut
+        );
+        
+    UUTPWM: PWM  
+        port map(
+            Clk     => Clk, 
+            Reset   => Reset, 
+            SigIn   => FControlOut,
+            PWMOut  => PWMOut
         );
         process
             variable  i  :  integer;        -- general loop indices
@@ -271,18 +291,18 @@ begin
             end loop;
 
         -- i dont think the sample rate for this is correct
-            FControl <= (others => '0'); 
-            wait for CLK_PERIOD; 
-            for j in 0 to 3 loop
-            for i in 0 to Test1012'length - 1 loop
-                --wait until rising_edge(SClk)
-                -- shift and quantize test input from [-1, 1] to 16 bits
-                TestSig := Test1012(i)*(2.0**(15)-1.0);
-                TestSig := TestSig + (2.0**(15)-1.0); 
-                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
-                wait for SAMPLE_CLK_PERIOD;
-            end loop; 
-            end loop;
+--            FControl <= (others => '0'); 
+--            wait for CLK_PERIOD; 
+--            for j in 0 to 3 loop
+--            for i in 0 to Test1012'length - 1 loop
+--                --wait until rising_edge(SClk)
+--                -- shift and quantize test input from [-1, 1] to 16 bits
+--                TestSig := Test1012(i)*(2.0**(15)-1.0);
+--                TestSig := TestSig + (2.0**(15)-1.0); 
+--                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
+--                wait for SAMPLE_CLK_PERIOD;
+--            end loop; 
+--            end loop;
             END_SIM <= true;
             wait;
         end process;
@@ -331,5 +351,8 @@ configuration TESTBENCH_FOR_MIXER of MixerTB is
         for UUTNCO: NCO
             use entity work.NCO;
         end for;
+        for UUTPWM: PWM 
+            use entity work.PWM; 
+        end for; 
     end for;
 end TESTBENCH_FOR_MIXER;
