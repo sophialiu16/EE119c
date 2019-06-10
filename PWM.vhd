@@ -2,9 +2,7 @@
 -- 
 -- PWM Audio Converter 
 --
--- Description
---
--- Ports:
+-- Outputs a pulse width modulated signal given a vector signal input. 
 --
 -- Revision History:
 -- 05/21/19 Sophia Liu Initial revision
@@ -29,16 +27,15 @@ entity PWM is
 end PWM; 
 
 architecture behavioral of PWM is
-    signal SigInDiv : unsigned(9 downto 0); --temporary, to see in sim
+    signal SigInDiv : unsigned(9 downto 0); --for simulation purposes
     signal PWMCount : unsigned(9 downto 0); 
     signal SampledSig : unsigned(9 downto 0); 
     begin 
         SigInDiv <= unsigned(SigIn(FCOUNT_BITS downto FCOUNT_BITS - 9)); 
         -- sample at 8 KHz (TODO)
-        -- use 39 MHz original sample clock 
+        -- uses 39 MHz original sample clock 
         -- 14 bit input ->  divide down to max 12 bit
-        -- will divide down to 10 bits 
-        -- display ~4.7 cycles (ew) 
+        -- divide down to 10 bits 
         
         -- counter for PWM
         process(Clk) 
@@ -49,7 +46,7 @@ architecture behavioral of PWM is
                     PWMCount <= PWMCount + 1; 
                     if PWMCount > to_unsigned(CountArrayPLL'length - 1, FCOUNT_BITS + 1)(FCOUNT_BITS downto FCOUNT_BITS - 9) then 
                         PWMCount <= (others => '0');
-                        SampledSig <= SigInDiv; -- TODO sample properly at 8 KHz
+                        SampledSig <= SigInDiv;
                     end if; 
                 end if; 
         end process; 

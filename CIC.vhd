@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------
 -- 
--- Bandpass filter 
+-- Lowpass filter 
 --
 -- Cascaded integrator-comb filter implementation. 
 -- This is a decimating CIC filter with N cascaded integrator stages
@@ -34,7 +34,7 @@ use ieee.math_real.all;
 library work; 
 use work.RecConstants.all;
 
-entity BPF is 
+entity CIC is 
     generic(
         N      : natural := FILTER_N;   -- number of integrator and comb stages
         R      : natural := FILTER_R;    -- rate change factor
@@ -47,9 +47,9 @@ entity BPF is
         Reset   : in std_logic;     -- active low reset input 
         SigOut  : out std_logic_vector(BITS_OUT downto 0) -- filtered output signal 
     );
-end BPF; 
+end CIC; 
 
-architecture BPF of BPF is 
+architecture CIC of CIC is 
     -- intermediate signals 
     -- ceil(N log2 (RM) + Bin) - 1
     type SumArray is array(integer range <>) of unsigned(BITS_OUT downto 0); 
@@ -119,4 +119,4 @@ architecture BPF of BPF is
     -- final comb stage output is the filtered signal 
     SigOut <= std_logic_vector(CombS(N)); 
     
-end BPF; 
+end CIC; 

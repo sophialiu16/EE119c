@@ -4,11 +4,7 @@
 --
 -- Oscillator for PLL. Adds to a frequency control value using a phase 
 -- error input, and accumulates that value to generate frequencies 
--- from 25 kHz to 175 kHz. 
---
--- Inputs: 
---
--- Outputs: 
+-- from 25 kHz to 175 kHz (to accomodate freq deviation of 75 kHz). 
 --
 -- Revision History:
 -- 05/04/19 Sophia Liu Initial revision
@@ -37,7 +33,6 @@ architecture NCO of NCO is
 	signal Count : unsigned(MAX_COUNT_BITS_PLL downto 0); -- counts up to generate various frequencies
 	signal SigOut : std_logic;                         -- intermediate output signal 
 	
-	--signal DivCount : unsigned(4 downto 0); 
 	constant ERRDIV : natural := 0; -- use divided phase error input 
 	
 	begin 

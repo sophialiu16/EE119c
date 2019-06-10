@@ -12,8 +12,6 @@
 -- Outputs: 
 --  SClk        : std_logic - 1-bit sample clock oscillator output
 --
--- Gate Count:  
---
 -- Revision History:
 -- 05/11/19 Sophia Liu Initial revision
 --

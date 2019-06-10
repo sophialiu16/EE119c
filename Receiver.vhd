@@ -1,10 +1,8 @@
 ----------------------------------------------------------------------------
 -- 
--- Receiver Entity (TODO)
+-- Receiver Entity 
 --
--- Description
---
--- Ports:
+-- Top level FM receiver entity and architecture. 
 --
 -- Revision History:
 -- 04/29/19 Sophia Liu Initial revision
@@ -25,7 +23,7 @@ entity Receiver is
             RF          : in std_logic_vector(ADC_BITS downto 0); -- RF input 
             FControl    : in std_logic_vector(6 downto 0); -- Frequency control 
             IFOut       : out std_logic_vector(ADC_BITS downto 0); -- Oscillator output
-            PWMOut      : out std_logic
+            PWMOut      : out std_logic                    -- PWM audio output 
         );
 end Receiver; 
 
@@ -76,7 +74,7 @@ architecture behavioral of Receiver is
         
         IFOut <= IFSig; 
         
-        BPF : entity work.BPF 
+        CIC : entity work.CIC
 		  generic map(
             N   => FILTER_N, 
             R   => FILTER_R,

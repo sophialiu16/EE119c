@@ -4,10 +4,6 @@
 --
 -- Low pass filter implementation
 --
--- Inputs: 
---
--- Outputs: 
---
 -- Revision History:
 -- 05/04/19 Sophia Liu Initial revision
 --
@@ -42,7 +38,7 @@ architecture FIR of FIRLPF is
 	RegN(0) <= (0 => SigIn, others => '0');  
 	Integrators : for x in 1 to N generate -- cascade N stages 
         process(Clk)
-           begin  
+           begin  -- ended with coeffs = 1 
             if Reset = '0' then  
                 RegN(x) <= (others => '0'); 
                 IntS(x) <= (others => '0'); -- set regs to zero if reset  

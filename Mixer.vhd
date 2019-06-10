@@ -40,7 +40,7 @@ architecture Mixer of Mixer is
 	begin 
 	process(Clk)
 	   begin  
-		if rising_edge(Clk) then --TODO upsampling? 
+		if rising_edge(Clk) then 
 		  if LO = '1' then 
 		      -- multiply signal by 1, no modification
 		      IFOut <= RF; 

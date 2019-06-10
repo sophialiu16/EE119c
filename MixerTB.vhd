@@ -57,7 +57,7 @@ architecture TB_ARCH of MixerTB is
         );
     end component; 
     
-    component BPF is 
+    component CIC is 
         generic(
             N      : natural := FILTER_N;   -- number of integrator and comb stages
             R      : natural := FILTER_R;    -- rate change factor
@@ -173,7 +173,7 @@ begin
             IFOut => IFOut
         );
         
-    UUTF: BPF 
+    UUTF: CIC 
         generic map(
             N   => FILTER_N, 
             R   => FILTER_R,
@@ -258,8 +258,6 @@ begin
             FControl <= (others => '0'); 
             wait for CLK_PERIOD;
             
-            -- catch up to sclk edge ?
-            
             --Reset <= '1'; 
             for j in 0 to 5 loop 
             for i in 0 to Test101'length - 1 loop
@@ -291,32 +289,33 @@ begin
             wait for CLK_PERIOD; 
             for j in 0 to 3 loop
             for i in 0 to Test173'length - 1 loop
-                --wait until rising_edge(SClk)
                 -- shift and quantize test input from [-1, 1] to 16 bits
                 TestSig := Test173(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
-                write(lineOutput, PWMOut); 
+                write(lineOutput, PWMOut);          -- write output of simple signal to test file
                 writeline(fileOutput1, lineOutput); 
                 wait for SAMPLE_CLK_PERIOD;
             end loop; 
             end loop;
             file_close(fileOutput1);
-        -- generated audio sig
---            file_open(fileInput1, "DSBOut1.txt", read_mode);
---            file_open(fileOutput2, "SigOut2.txt", write_mode); 
---            FControl <= (others => '0'); 
---            wait for CLK_PERIOD; 
---            while not endfile(fileInput1) loop
---                readline(fileInput1, lineInput); -- read input from file 
---                read(lineInput, TestSig); 
---                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
---                write(lineOutput, PWMOut); 
---                writeline(fileOutput2, lineOutput); 
---                wait for SAMPLE_CLK_PERIOD;
---            end loop; 
---            file_close(fileInput1);
---            file_close(fileOutput2);
+           
+            -- read from file for modulated audio input 
+            -- output demodulated signal 
+            file_open(fileInput1, "DSBOut1.txt", read_mode);
+            file_open(fileOutput2, "SigOut2.txt", write_mode); 
+            FControl <= (others => '0'); 
+            wait for CLK_PERIOD; 
+            while not endfile(fileInput1) loop
+                readline(fileInput1, lineInput); -- read input from file 
+                read(lineInput, TestSig);           
+                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
+                write(lineOutput, PWMOut);      -- write PWM output to file 
+                writeline(fileOutput2, lineOutput); 
+                wait for SAMPLE_CLK_PERIOD;
+            end loop; 
+            file_close(fileInput1);
+            file_close(fileOutput2);
     
             END_SIM <= true;
             wait;
@@ -354,8 +353,8 @@ configuration TESTBENCH_FOR_MIXER of MixerTB is
         for UUTM : Mixer
             use entity work.Mixer;
         end for;
-        for UUTF : BPF
-            use entity work.BPF;
+        for UUTF : CIC
+            use entity work.CIC;
         end for;
         for UUTP: PhaseDetector
             use entity work.PhaseDetector;

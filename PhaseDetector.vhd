@@ -2,14 +2,8 @@
 -- 
 -- Phase detector
 --
--- Takes two 1-bit inputs and outputs 1-bit up and down phase errors. 
---
--- Inputs: 
---
--- Outputs: 
---
--- 
--- Gate Count: 
+-- Takes two 1-bit inputs and returns a phase error. 
+-- Outputs 1-bit up and down phase errors. 
 --
 -- Revision History:
 -- 05/04/19 Sophia Liu Initial revision
@@ -83,16 +77,6 @@ architecture Arch of PhaseDetector is
 	PDReset <= PhaseDownInt and PhaseUpInt; 
 	PhaseDown <= PhaseDown0; 
 	PhaseUp <= PhaseUp0; 
-	
-    -- counter for phase reset delay 
---    ClkDiv: process(Clk) 
---        begin 
---        if Reset = '0' then 
---            DivCount <= (others => '0'); -- reset counter if reset 
---        elsif rising_edge(Clk)  then 
---            DivCount <= DivCount + 1;     -- accumulate counter on clk edge
---        end if; 
---    end process; 
     
     -- delay for phase reset
      process(Clk) 

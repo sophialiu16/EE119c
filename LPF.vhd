@@ -2,11 +2,8 @@
 -- 
 -- Loop Filter
 --
--- Low pass filter for phase error. Not sure if it does much right now. 
+-- Low pass filter architecture implementation for phase error.
 --
--- Inputs: 
---
--- Outputs: 
 --
 -- Revision History:
 -- 05/04/19 Sophia Liu Initial revision
@@ -37,10 +34,6 @@ architecture LPF of LoopFilter is
     signal PhaseErrI : std_logic_vector(ERR_BITS downto 0);
     
 	begin 
-    process(Clk)
-    begin 
-    
-    end process; 
     
     -- LPF for up/down phases
     LPFUP : entity work.FIRLPF
