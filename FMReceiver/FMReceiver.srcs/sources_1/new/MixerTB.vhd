@@ -20,6 +20,9 @@ library work;
 use work.RecConstants.all;
 use work.TestVectors.all;
 
+use STD.textio.all; -- for outputing simulated result 
+use ieee.std_logic_textio.all;
+
 entity MixerTB is
 end MixerTB;
 
@@ -139,6 +142,10 @@ architecture TB_ARCH of MixerTB is
     --signal PDReset : std_logic; 
     signal FControlOut : std_logic_vector(FCOUNT_BITS downto 0);
     signal PWMOut : std_logic; 
+    
+    file fileInput1 : text; 
+    file fileOutput1 : text; 
+    file fileOutput2 : text; 
 begin
     -- test components
     UUTSO  : SampleOsc 
@@ -224,8 +231,11 @@ begin
 
             variable TestSig : real; 
             
+            variable lineInput : line; 
+            variable lineOutput : line;
+            
             begin
-
+            file_open(fileOutput1, "SigOut1.txt", write_mode);  
             -- have not yet started
             Reset <= '0';
             FControl <= (others => '0'); 
@@ -286,23 +296,28 @@ begin
                 TestSig := Test173(i)*(2.0**(15)-1.0);
                 TestSig := TestSig + (2.0**(15)-1.0); 
                 RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
+                write(lineOutput, PWMOut); 
+                writeline(fileOutput1, lineOutput); 
                 wait for SAMPLE_CLK_PERIOD;
             end loop; 
             end loop;
-
-        -- i dont think the sample rate for this is correct
+            file_close(fileOutput1);
+        -- generated audio sig
+--            file_open(fileInput1, "DSBOut1.txt", read_mode);
+--            file_open(fileOutput2, "SigOut2.txt", write_mode); 
 --            FControl <= (others => '0'); 
 --            wait for CLK_PERIOD; 
---            for j in 0 to 3 loop
---            for i in 0 to Test1012'length - 1 loop
---                --wait until rising_edge(SClk)
---                -- shift and quantize test input from [-1, 1] to 16 bits
---                TestSig := Test1012(i)*(2.0**(15)-1.0);
---                TestSig := TestSig + (2.0**(15)-1.0); 
+--            while not endfile(fileInput1) loop
+--                readline(fileInput1, lineInput); -- read input from file 
+--                read(lineInput, TestSig); 
 --                RF <= std_logic_vector(to_unsigned(natural(TestSig), 16)); 
+--                write(lineOutput, PWMOut); 
+--                writeline(fileOutput2, lineOutput); 
 --                wait for SAMPLE_CLK_PERIOD;
 --            end loop; 
---            end loop;
+--            file_close(fileInput1);
+--            file_close(fileOutput2);
+    
             END_SIM <= true;
             wait;
         end process;

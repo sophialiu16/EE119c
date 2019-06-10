@@ -46,7 +46,7 @@ architecture behavioral of Receiver is
     
     signal FOutPLL : std_logic;
     signal FControlOut : std_logic_vector(FCOUNT_BITS downto 0); 
-	 
+    
     begin 
     
         SOsc: entity work.SampleOsc 
@@ -118,5 +118,12 @@ architecture behavioral of Receiver is
             FControlOut => FControlOut
         );
         
+        PWM: entity work.PWM
+        port map (
+            Clk         => Clk, 
+            Reset       => Reset, 
+            SigIn       => FControlOut,
+            PWMOut      => PWMOut
+       ); 
 end behavioral; 
  
